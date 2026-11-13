@@ -1,0 +1,71 @@
+/* Ajustes propios de la aplicación Django sobre el sistema de diseño del prototipo
+   (static/css/skillgraph.css, copiado sin cambios de prototipo/index.html). */
+
+a.btn, a.rail-btn{text-decoration:none}
+.rail form{display:contents}
+
+/* Casillas y opciones de radio también se resaltan cuando son inválidas */
+input[type="checkbox"], input[type="radio"]{width:18px;height:18px;accent-color:#0DBA4E;flex:none}
+input[type="checkbox"].is-invalid, input[type="radio"].is-invalid{outline:2px solid var(--danger);outline-offset:2px}
+.opt:has(input:checked){border-color:var(--green);background:var(--green-soft);color:#0A6B32;font-weight:600}
+
+/* Tablas (listas con una acción por registro) */
+.tabla-card{padding:6px 10px;overflow-x:auto}
+.tabla{width:100%;border-collapse:collapse;font-size:14px}
+.tabla th{text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);padding:12px 10px;border-bottom:1.5px solid var(--line)}
+.tabla td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tabla tr:last-child td{border-bottom:none}
+.tabla .centro{text-align:center}
+.acciones{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.acciones form{display:inline}
+.btn-sm{padding:8px 13px;font-size:13px}
+.btn-peligro{background:var(--danger);color:#fff}
+.peligro{color:var(--danger)}
+.tag-neutro{background:var(--sky-soft);color:var(--navy-2)}
+.suma-ok b{color:#0A6B32}
+.suma-mal b{color:var(--danger)}
+.solo-lectores{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.alert-aviso{background:var(--warn-soft);border:1.5px solid var(--warn);color:var(--warn);font-weight:500}
+
+/* Perfil del candidato (HU-RF-003) */
+.input.sin-extraer,.textarea.sin-extraer{border-color:var(--warn);background:var(--warn-soft)}
+.bloque-sin-extraer{border:1.5px solid var(--warn);background:var(--warn-soft);border-radius:var(--r-md);padding:12px 14px}
+.aviso-campo{font-size:11.5px;color:var(--warn);margin-top:5px;font-weight:600}
+.drop input[type="file"]{margin-top:14px;max-width:100%}
+.drop.is-invalid{border-color:var(--danger);background:var(--danger-soft)}
+.habs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.hab{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-size:13.5px;cursor:pointer}
+.hab:hover{border-color:var(--sky);background:var(--sky-soft)}
+.hab select{display:none;border:none;background:transparent;font-weight:700;padding:0 2px}
+.hab:has(input:checked){background:var(--green-soft);border-color:var(--green);color:#0A6B32;font-weight:600}
+.hab:has(input:checked) select{display:inline-block}
+.grupo-habs{border-top:1px solid var(--line);padding:12px 0}
+.grupo-habs summary{cursor:pointer;font-weight:600;font-size:14px}
+.grupo-habs.is-invalid{outline:2px solid var(--danger);outline-offset:6px;border-radius:var(--r-sm)}
+.texto-largo{white-space:pre-line;font-size:14px;line-height:1.55}
+
+/* Recomendaciones y explicación del match (HU-RF-005) */
+a.chip{text-decoration:none;color:inherit}
+.porque{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.porque summary{list-style:none;display:inline-flex}
+.porque summary::-webkit-details-marker{display:none}
+.porque[open] summary{background:var(--sky-soft);border-color:var(--sky)}
+.fila-habilidad{margin-top:7px;line-height:1.9}
+.comp .cv{width:110px}
+
+/* Postulaciones (HU-RF-006 y HU-RF-013) */
+.job-actions+.porque{border-top:none;padding-top:0;margin-top:12px}
+.form-postular{display:inline}
+.tag-aviso{background:var(--warn-soft);color:var(--warn)}
+.job-actions form.row{gap:8px}
+
+/* Habilidades por debajo del nivel exigido: naranja, más claro cuanto más cerca del nivel */
+.tag-brecha{border:1px solid transparent}
+.brecha-1{background:#FFF5E6;color:#A8640F;border-color:#FBE3BF}
+.brecha-2{background:#FDE7C4;color:#96560A;border-color:#F8D49B}
+.brecha-3{background:#FAD49B;color:#7E4506;border-color:#F3BD72}
+.brecha-4{background:#F5BD6E;color:#653503;border-color:#EBA548}
+.alert-nivel{background:#FFF8EE;border:1.5px solid #F8D49B;color:#96560A;font-weight:500;flex-wrap:wrap;align-items:center}
+.cambios{background:var(--sky-soft);border:1.5px solid var(--sky);border-radius:var(--r-md);padding:13px 15px;margin-bottom:14px}
+.sube{color:#0A6B32;font-weight:700}
+.baja{color:var(--danger);font-weight:700}

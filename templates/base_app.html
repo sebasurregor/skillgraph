@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block cuerpo %}
+<section class="app">
+  <nav class="rail" aria-label="Navegación principal">
+    <div class="rail-logo">{% include "_logo.html" with tam=20 %}</div>
+
+    <a class="rail-btn{% if seccion == 'inicio' %} active{% endif %}" href="{% url 'cuentas:inicio' %}" aria-label="Inicio">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      <span class="rail-tip">Inicio</span>
+    </a>
+    {% if user.es_reclutador %}
+    <a class="rail-btn{% if seccion == 'vacantes' %} active{% endif %}" href="{% url 'vacantes:lista' %}" aria-label="Mis vacantes">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg>
+      <span class="rail-tip">Mis vacantes</span>
+    </a>
+    {% endif %}
+    {% if user.es_candidato %}
+    <a class="rail-btn{% if seccion == 'recomendaciones' %} active{% endif %}" href="{% url 'recomendaciones:lista' %}" aria-label="Vacantes recomendadas">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+      <span class="rail-tip">Vacantes recomendadas</span>
+    </a>
+    <a class="rail-btn{% if seccion == 'postulaciones' %} active{% endif %}" href="{% url 'postulaciones:mias' %}" aria-label="Mis postulaciones">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+      <span class="rail-tip">Mis postulaciones</span>
+    </a>
+    <a class="rail-btn{% if seccion == 'perfil' %} active{% endif %}" href="{% url 'perfiles:mi_perfil' %}" aria-label="Mi perfil">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+      <span class="rail-tip">Mi perfil</span>
+    </a>
+    <a class="rail-btn{% if seccion == 'preferencias' %} active{% endif %}" href="{% url 'perfiles:preferencias' %}" aria-label="Preferencias laborales">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+      <span class="rail-tip">Preferencias</span>
+    </a>
+    {% endif %}
+    {% block rail %}{% endblock %}
+
+    <div class="rail-spacer"></div>
+    <form method="post" action="{% url 'cuentas:salir' %}">
+      {% csrf_token %}
+      <button class="rail-btn" type="submit" aria-label="Cerrar sesión">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l4-4-4-4M14 12H4"/></svg>
+        <span class="rail-tip">Cerrar sesión</span>
+      </button>
+    </form>
+    <div class="avatar" title="{{ user.get_full_name }}">{{ user.iniciales }}</div>
+  </nav>
+
+  <main>
+    <div class="view">
+      {% include "_alertas.html" with sin_alerta_form=True %}
+      {% block contenido %}{% endblock %}
+    </div>
+  </main>
+</section>
+{% endblock %}
