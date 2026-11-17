@@ -41,6 +41,11 @@
     {{ form.acepta_datos }}
     <span class="tiny muted">{{ form.acepta_datos.label }} <span class="req">*</span></span>
   </label>
+    <label class="row center" for="{{ form.acepta_compartir_empresas.id_for_label }}" style="margin-top:12px;gap:10px;cursor:pointer">
+    {{ form.acepta_compartir_empresas }}
+    <span class="tiny muted">{{ form.acepta_compartir_empresas.label }} <span class="req">*</span></span>
+  </label>
+  {% for error in form.acepta_compartir_empresas.errors %}<p class="err-msg">{{ error }}</p>{% endfor %}
   {% for error in form.acepta_datos.errors %}<p class="err-msg">{{ error }}</p>{% endfor %}
   <button class="btn btn-primary btn-block" type="submit" style="margin-top:20px">Crear cuenta</button>
 </form>

@@ -53,7 +53,7 @@ def contar_candidatos_potenciales(requisitos):
 
 
 def _perfiles_confirmados():
-    return PerfilCandidato.objects.filter(confirmado=True)
+    return PerfilCandidato.objects.filter(confirmado=True, usuario__consentimiento_compartir_empresas=True)
 
 
 def _total_sqlite():

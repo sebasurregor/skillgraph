@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin-top: 50px;">
+    <h2>Solicitar eliminación de cuenta</h2>
+    <p class="text-danger">
+        <strong>Advertencia:</strong> Si confirma esta acción, su cuenta y todos sus datos personales 
+        serán marcados para eliminación y borrados permanentemente en un máximo de 30 días.
+    </p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div style="margin-top: 20px;">
+            <button type="submit" style="padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">Sí, eliminar mi cuenta</button>
+            <a href="{% url 'raiz' %}" style="padding: 10px; margin-left: 10px; text-decoration: none; color: black;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

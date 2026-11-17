@@ -1,6 +1,6 @@
 # SkillGraph AI — Matching explicable de vacantes y competencias
 
-Equipo de trabajo: Sebastian Urrego Ramirez, Juan Manuel Agudelo Salazar, Juan Pablo López Lidueña
+Equipo de trabajo: Sebastian Urrego Ramirez, Juan Pablo López
 
 Proyecto final de Sistemas de Información · Periodo 2026-2
 
@@ -69,6 +69,7 @@ Edite `.env` si su Neo4j usa otras credenciales. Valores por defecto:
 | `NEO4J_DATABASE` | `neo4j` | Base de datos del grafo |
 | `MATCHING_VERSION` | `1.0.0` | Versión del algoritmo que se muestra en la explicación |
 | `W_COBERTURA`, `W_NIVEL`, `W_CENTRALIDAD`, `W_ADYACENCIA` | `0.60`, `0.25`, `0.10`, `0.05` | Pesos de la fórmula del match |
+| `ENCRYPTION_KEY` | (cámbiela en producción) | Clave de encrypción de datos |
 
 ### Levantar Neo4j
 
