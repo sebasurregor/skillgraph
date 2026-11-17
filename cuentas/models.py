@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-
+from skillgraph.campos_encriptados import EncryptedCharField
 
 class UsuarioManager(BaseUserManager):
     use_in_migrations = True
@@ -34,10 +34,23 @@ class Usuario(AbstractUser):
     username = None
     email = models.EmailField("correo electrónico", unique=True)
     rol = models.CharField(max_length=12, choices=Rol.choices, default=Rol.CANDIDATO)
-    telefono = models.CharField("teléfono", max_length=10)
-    ciudad = models.CharField(max_length=60)
-    empresa = models.CharField(max_length=120, blank=True)
+
+    # We encrypt personal data
+    telefono = EncryptedCharField("teléfono", max_length=10)
+    ciudad = EncryptedCharField(max_length=60)
+    empresa = EncryptedCharField(max_length=120, blank=True)
+
     acepta_tratamiento_datos = models.BooleanField(default=False)
+
+    # Para HU-RNF-007
+    consentimiento_compartir_empresas = models.BooleanField(
+        default=False, 
+        help_text="El usuario autoriza compartir su perfil con empresas."
+    )
+    solicitud_eliminacion_en = models.DateTimeField(
+        null=True, blank=True, 
+        help_text="Fecha en que el usuario solicitó eliminar su cuenta."
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -62,3 +75,19 @@ class Usuario(AbstractUser):
     @property
     def iniciales(self):
         return ((self.first_name[:1] or "?") + self.last_name[:1]).upper()
+
+class HistorialAccion(models.Model):
+    """Registro de trazabilidad para acciones críticas (HU-RNF)."""
+    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+    accion = models.CharField(max_length=100)
+    detalles = models.JSONField(default=dict, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-fecha"]
+        verbose_name = "historial de acción"
+        verbose_name_plural = "historial de acciones"
+
+    def __str__(self):
+        return f"{self.usuario} - {self.accion} - {self.fecha}"

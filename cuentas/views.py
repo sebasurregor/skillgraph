@@ -6,6 +6,12 @@ from django.views.decorators.http import require_POST
 from cuentas import services
 from cuentas.forms import ClaveForm, CorreoForm, RegistroForm
 
+import json
+from django.http import HttpResponse
+from django.utils import timezone
+from django.core.serializers.json import DjangoJSONEncoder
+from perfiles.models import PerfilCandidato
+
 SESION_CORREO = "correo_ingreso"
 
 
@@ -50,7 +56,9 @@ def registro(request):
             correo=d["correo"], clave=d["clave"], nombres=d["nombres"],
             apellidos=d["apellidos"], telefono=d["telefono"], ciudad=d["ciudad"],
             rol=d["rol"], empresa=d["empresa"], acepta_datos=d["acepta_datos"],
+            acepta_compartir=d["acepta_compartir_empresas"],
         )
+        services.registrar_trazabilidad(usuario, "CREACION_CUENTA", request=request)
         request.session[SESION_CORREO] = usuario.email
         messages.success(request, "Su cuenta fue creada correctamente. Ingrese la contraseña "
                                   "que acaba de definir para continuar.")
@@ -68,3 +76,62 @@ def salir(request):
 @login_required
 def inicio(request):
     return render(request, "cuentas/inicio.html")
+
+@login_required
+def solicitar_eliminacion(request):
+    """Marca la cuenta para ser eliminada en 30 días."""
+    if request.method == "POST":
+        usuario = request.user
+        usuario.solicitud_eliminacion_en = timezone.now()
+        usuario.save()
+        services.registrar_trazabilidad(usuario, "SOLICITUD_ELIMINACION", request=request)
+        messages.warning(
+            request, 
+            "Su solicitud de eliminación ha sido registrada. Sus datos serán "
+            "borrados permanentemente en un máximo de 30 días."
+        )
+        return redirect("raiz")
+    return render(request, "cuentas/confirmar_eliminacion.html")
+
+@login_required
+def exportar_datos(request):
+    """Descarga un JSON con toda la información del usuario."""
+    usuario = request.user
+    perfil = PerfilCandidato.objects.filter(usuario=usuario).first()
+    
+    datos = {
+        "cuenta": {
+            "email": usuario.email,
+            "nombres": usuario.first_name,
+            "apellidos": usuario.last_name,
+            "telefono": usuario.telefono,
+            "ciudad": usuario.ciudad,
+            "empresa": usuario.empresa,
+            "fecha_registro": usuario.date_joined,
+            "consentimiento_compartir": usuario.consentimiento_compartir_empresas,
+            "solicitud_eliminacion": usuario.solicitud_eliminacion_en,
+        },
+        "perfil_candidato": {},
+        "habilidades": []
+    }
+    
+    if perfil:
+        datos["perfil_candidato"] = {
+            "nombre_completo": perfil.nombre_completo,
+            "correo_contacto": perfil.correo,
+            "telefono": perfil.telefono,
+            "experiencia": perfil.experiencia,
+            "educacion": perfil.educacion,
+        }
+        datos["habilidades"] = [
+            {"habilidad": h.habilidad.nombre, "nivel": h.nivel} 
+            for h in perfil.habilidades.all()
+        ]
+        
+    # Generar la descarga del archivo JSON
+    response = HttpResponse(
+        json.dumps(datos, cls=DjangoJSONEncoder, indent=4, ensure_ascii=False),
+        content_type="application/json"
+    )
+    response['Content-Disposition'] = 'attachment; filename="mis_datos_skillgraph.json"'
+    return response

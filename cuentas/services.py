@@ -3,7 +3,7 @@ import logging
 
 from django.contrib.auth import authenticate, login, logout
 
-from cuentas.models import Usuario
+from cuentas.models import Usuario, HistorialAccion
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ def existe_cuenta(correo):
 
 
 def registrar_usuario(*, correo, clave, nombres, apellidos, telefono, ciudad,
-                      rol=Usuario.Rol.CANDIDATO, empresa="", acepta_datos=True):
+                      rol=Usuario.Rol.CANDIDATO, empresa="", acepta_datos=True, acepta_compartir=False):
     """Crea la cuenta. La contraseña se guarda cifrada (ver cuentas/hashers.py)."""
     usuario = Usuario.objects.create_user(
         email=correo,
@@ -29,6 +29,7 @@ def registrar_usuario(*, correo, clave, nombres, apellidos, telefono, ciudad,
         rol=rol,
         empresa=empresa.strip() if rol == Usuario.Rol.RECLUTADOR else "",
         acepta_tratamiento_datos=acepta_datos,
+        consentimiento_compartir_empresas=acepta_compartir,
     )
     logger.info("Cuenta creada: usuario %s con rol %s", usuario.pk, usuario.rol)
     return usuario
@@ -46,3 +47,20 @@ def iniciar_sesion(request, correo, clave):
 
 def cerrar_sesion(request):
     logout(request)
+
+def registrar_trazabilidad(usuario, accion, detalles=None, request=None):
+    """Guarda un registro de auditoría de una acción crítica."""
+    ip = None
+    if request:
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+            
+    HistorialAccion.objects.create(
+        usuario=usuario,
+        accion=accion,
+        detalles=detalles or {},
+        ip_address=ip
+    )

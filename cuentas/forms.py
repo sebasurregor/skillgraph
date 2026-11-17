@@ -66,6 +66,13 @@ class RegistroForm(FormularioValidadoMixin, forms.Form):
     acepta_datos = forms.BooleanField(
         label="Autorizo el tratamiento de mis datos personales para fines de intermediación "
               "laboral, conforme a la Ley 1581 de 2012.")
+    acepta_compartir_empresas = forms.BooleanField(
+        label="Autorizo que mi perfil (experiencia, educación y habilidades) sea visible "
+              "para las empresas reclutadoras en la plataforma.",
+        required=True, 
+        error_messages={"required": "Debe autorizar la visualización de su perfil para crear la cuenta."}
+    )
+
 
     def clean_correo(self):
         correo = services.normalizar_correo(self.cleaned_data["correo"])

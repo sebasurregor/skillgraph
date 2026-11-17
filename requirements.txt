@@ -3,8 +3,9 @@ Django==5.0
 neo4j>=5.28,<6.0
 python-dotenv==1.0.1
 
-# ---- Cifrado de contraseñas (HU-RNF-001) ---------------------------------
+# ---- Cifrado de contraseñas e Información (HU-RNF-001 & 007) ---------------------------------
 bcrypt==4.2.0
+cryptography
 
 # ---- Lectura de hojas de vida (HU-RF-003) ---------------------------------
 pdfplumber==0.11.4

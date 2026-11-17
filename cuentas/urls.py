@@ -10,4 +10,6 @@ urlpatterns = [
     path("registro/", views.registro, name="registro"),
     path("salir/", views.salir, name="salir"),
     path("inicio/", views.inicio, name="inicio"),
+    path("eliminar-cuenta/", views.solicitar_eliminacion, name="solicitar_eliminacion"),
+    path("exportar-datos/", views.exportar_datos, name="exportar_datos"),
 ]

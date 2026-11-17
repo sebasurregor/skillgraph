@@ -27,4 +27,23 @@
       <p class="small muted">Por seguridad, la sesión se cierra sola tras 15 minutos sin actividad.</p></div>
   </div>
 </div>
+<hr style="margin-top: 40px; margin-bottom: 20px;">
+
+<div class="privacy-section">
+    <h3>Privacidad y Datos Personales</h3>
+    <p>Usted tiene control total sobre su información.</p>
+    
+    <div style="display: flex; gap: 15px; margin-top: 15px;">
+        <a href="{% url 'cuentas:exportar_datos' %}" class="btn btn-secondary" style="padding: 10px; background-color: #e0e0e0; text-decoration: none; color: black; border-radius: 5px;">
+            Descargar copia de mis datos
+        </a>
+
+        <form action="{% url 'cuentas:solicitar_eliminacion' %}" method="POST" onsubmit="return confirm('¿Está seguro que desea solicitar la eliminación de su cuenta? Sus datos serán borrados en un máximo de 30 días.');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Solicitar eliminación de cuenta
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}

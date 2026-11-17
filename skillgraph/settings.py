@@ -165,3 +165,5 @@ LOGGING = {
     },
     "root": {"handlers": ["consola", "archivo"], "level": "INFO"},
 }
+
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY", "")
