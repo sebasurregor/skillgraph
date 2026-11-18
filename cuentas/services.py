@@ -16,8 +16,11 @@ def existe_cuenta(correo):
     return Usuario.objects.filter(email=normalizar_correo(correo)).exists()
 
 
-def registrar_usuario(*, correo, clave, nombres, apellidos, telefono, ciudad,
-                      rol=Usuario.Rol.CANDIDATO, empresa="", acepta_datos=True, acepta_compartir=False):
+def registrar_usuario(
+    *, correo, clave, nombres, apellidos, telefono, ciudad,
+    rol=Usuario.Rol.CANDIDATO, empresa="", acepta_datos=True,
+    acepta_compartir=True,
+):
     """Crea la cuenta. La contraseña se guarda cifrada (ver cuentas/hashers.py)."""
     usuario = Usuario.objects.create_user(
         email=correo,

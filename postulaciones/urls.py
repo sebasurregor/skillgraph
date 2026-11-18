@@ -10,4 +10,9 @@ urlpatterns = [
     path("vacante/<int:vacante_id>/", views.de_vacante, name="de_vacante"),
     path("<int:pk>/estado/", views.cambiar_estado, name="cambiar_estado"),
     path("<int:pk>/hoja-de-vida/", views.hoja_de_vida, name="hoja_de_vida"),
+    path(
+        "notificaciones/configurar/",
+        views.configurar_notificaciones,
+        name="configurar_notificaciones",
+    ),
 ]

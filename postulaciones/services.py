@@ -1,11 +1,14 @@
 """Lógica de negocio de las postulaciones (HU-RF-006 y HU-RF-013)."""
 import logging
 
+from django.core.mail import send_mail
 from django.db import IntegrityError, transaction
 
 from matching import services as matching
 from perfiles import services as perfiles
-from postulaciones.models import Postulacion
+from postulaciones.models import (
+    NotificacionPostulacion, Postulacion, PreferenciaNotificacion,
+)
 from vacantes.models import Vacante
 
 logger = logging.getLogger(__name__)
@@ -90,12 +93,89 @@ def priorizadas(vacante, solo_obligatorias=False):
             "cumplen": len(cumplen), "aviso": aviso}
 
 
+ALIAS_ESTADOS = {
+    "vista": Postulacion.Estado.EN_REVISION,
+    "aceptada": Postulacion.Estado.PRESELECCIONADA,
+    "rechazada": Postulacion.Estado.DESCARTADA,
+}
+
+TEXTOS_NOTIFICACION = {
+    Postulacion.Estado.EN_REVISION: (
+        "Su postulación a «{vacante}» en {empresa} fue vista y está en revisión."
+    ),
+    Postulacion.Estado.PRESELECCIONADA: (
+        "¡Buenas noticias! Su postulación a «{vacante}» en {empresa} fue aceptada."
+    ),
+    Postulacion.Estado.DESCARTADA: (
+        "Su postulación a «{vacante}» en {empresa} fue rechazada."
+    ),
+}
+
+
+def preferencias_notificacion_de(usuario):
+    prefs, _ = PreferenciaNotificacion.objects.get_or_create(usuario=usuario)
+    return prefs
+
+
+def configurar_notificaciones(usuario, *, plataforma=True, correo=True):
+    prefs = preferencias_notificacion_de(usuario)
+    prefs.notificar_plataforma = bool(plataforma)
+    prefs.notificar_correo = bool(correo)
+    prefs.save()
+    return prefs
+
+
+def notificaciones_de(usuario):
+    return (
+        NotificacionPostulacion.objects.filter(
+            usuario=usuario, enviada_plataforma=True
+        )
+        .select_related("postulacion__vacante")
+        .order_by("-creada_en")
+    )
+
+
+def notificar_cambio_estado(postulacion):
+    plantilla = TEXTOS_NOTIFICACION.get(postulacion.estado)
+    if not plantilla:
+        return None
+    usuario = postulacion.candidato.usuario
+    prefs = preferencias_notificacion_de(usuario)
+    mensaje = plantilla.format(
+        vacante=postulacion.vacante.titulo,
+        empresa=postulacion.vacante.empresa or "la empresa",
+    )
+    destinatario = postulacion.candidato.correo or usuario.email
+    enviado_correo = False
+    if prefs.notificar_correo and destinatario:
+        send_mail(
+            subject=f"Estado de su postulación: {postulacion.vacante.titulo}",
+            message=mensaje,
+            from_email="notificaciones@skillgraph.co",
+            recipient_list=[destinatario],
+            fail_silently=True,
+        )
+        enviado_correo = True
+    return NotificacionPostulacion.objects.create(
+        usuario=usuario,
+        postulacion=postulacion,
+        estado=postulacion.estado,
+        mensaje=mensaje,
+        enviada_plataforma=prefs.notificar_plataforma,
+        enviada_correo=enviado_correo,
+    )
+
+
 def cambiar_estado(postulacion, estado):
-    if estado not in Postulacion.Estado.values:
+    estado_norm = ALIAS_ESTADOS.get(estado, estado)
+    if estado_norm not in Postulacion.Estado.values:
         raise PostulacionRechazada("Ese estado no existe.")
-    postulacion.estado = estado
+    anterior = postulacion.estado
+    postulacion.estado = estado_norm
     postulacion.save()
-    logger.info("Postulación %s pasó a %s", postulacion.pk, estado)
+    logger.info("Postulación %s pasó a %s", postulacion.pk, estado_norm)
+    if anterior != estado_norm and estado_norm in TEXTOS_NOTIFICACION:
+        notificar_cambio_estado(postulacion)
     return postulacion
 
 

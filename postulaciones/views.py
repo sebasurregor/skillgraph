@@ -47,7 +47,21 @@ def postular(request, vacante_id):
 def mis_postulaciones(request):
     return render(request, "postulaciones/mis_postulaciones.html", {
         "postulaciones": services.postulaciones_de(request.user),
+        "notificaciones": services.notificaciones_de(request.user),
+        "prefs_notificacion": services.preferencias_notificacion_de(request.user),
         "seccion": "postulaciones"})
+
+
+@solo_candidato
+@require_POST
+def configurar_notificaciones(request):
+    plataforma = request.POST.get("notificar_plataforma") == "on"
+    correo = request.POST.get("notificar_correo") == "on"
+    services.configurar_notificaciones(
+        request.user, plataforma=plataforma, correo=correo
+    )
+    messages.success(request, "Preferencias de notificación actualizadas.")
+    return _volver(request, "postulaciones:mias")
 
 
 # ---- Reclutador (HU-RF-013) ---------------------------------------------------

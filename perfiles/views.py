@@ -1,11 +1,13 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from cuentas.models import Usuario
 from cuentas.permisos import rol_requerido
 from perfiles import services
 from perfiles.forms import CargaCVForm, PerfilForm, PreferenciasForm
-from perfiles.models import HojaDeVida
+from perfiles.models import HojaDeVida, PerfilCandidato
 
 solo_candidato = rol_requerido(Usuario.Rol.CANDIDATO)
 
@@ -96,3 +98,28 @@ def preferencias(request):
         form = PreferenciasForm(initial=inicial, opciones=opciones)
     return render(request, "perfiles/preferencias.html", {
         "form": form, "primera_vez": actuales is None, "seccion": "preferencias"})
+
+
+@solo_candidato
+@require_POST
+def configurar_visibilidad(request):
+    """HU-RF-009: cambia la visibilidad del perfil en cualquier momento."""
+    perfil = services.perfil_de(request.user)
+    visibilidad = request.POST.get("visibilidad", "")
+    try:
+        services.cambiar_visibilidad(perfil, visibilidad)
+    except ValueError:
+        messages.error(request, "Seleccione una opción de visibilidad válida.")
+        return redirect("perfiles:mi_perfil")
+    estado_txt = "público" if perfil.es_publico else "privado"
+    messages.success(request, f"Su perfil ahora es {estado_txt}.")
+    return redirect("perfiles:mi_perfil")
+
+
+@login_required
+def ver_perfil(request, pk):
+    """Consulta del perfil profesional respetando la visibilidad elegida."""
+    perfil = get_object_or_404(PerfilCandidato, pk=pk)
+    datos = services.datos_visibles_de(perfil, solicitante=request.user)
+    return render(request, "perfiles/ver_perfil.html", {
+        "perfil": perfil, "datos": datos, "seccion": "perfil"})

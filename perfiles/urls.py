@@ -10,4 +10,6 @@ urlpatterns = [
     path("preferencias/", views.preferencias, name="preferencias"),
     path("confirmar/", views.confirmar, name="confirmar_manual"),
     path("confirmar/<int:pk>/", views.confirmar, name="confirmar_cv"),
+    path("visibilidad/", views.configurar_visibilidad, name="visibilidad"),
+    path("ver/<int:pk>/", views.ver_perfil, name="ver_perfil"),
 ]

@@ -11,4 +11,11 @@ urlpatterns = [
     path("<int:pk>/publicar/", views.publicar, name="publicar"),
     path("<int:pk>/despublicar/", views.despublicar, name="despublicar"),
     path("<int:pk>/eliminar/", views.eliminar, name="eliminar"),
+    path("favoritas/", views.favoritas, name="favoritas"),
+    path("<int:pk>/favorita/", views.alternar_favorita, name="alternar_favorita"),
+    path(
+        "<int:pk>/favorita/eliminar/",
+        views.eliminar_favorita,
+        name="eliminar_favorita",
+    ),
 ]

@@ -36,4 +36,46 @@
   <a class="btn btn-primary" href="{% url 'recomendaciones:lista' %}">Ver vacantes recomendadas</a>
 </div>
 {% endif %}
+
+<div class="grid-2" style="margin-top:20px">
+  <div class="card" id="config-notificaciones">
+    <h3>Canales de notificación</h3>
+    <p class="small muted">Elija cómo quiere recibir avisos cuando una postulación sea vista, aceptada o rechazada.</p>
+    <form method="post" action="{% url 'postulaciones:configurar_notificaciones' %}" style="margin-top:12px">
+      {% csrf_token %}
+      <div class="setting">
+        <div><b style="font-size:14.5px">Notificaciones en la plataforma</b>
+          <p class="small muted">Muestra alertas en su histórico dentro de SkillGraph AI.</p></div>
+        <input type="checkbox" name="notificar_plataforma" id="id_notificar_plataforma"{% if prefs_notificacion.notificar_plataforma %} checked{% endif %}>
+      </div>
+      <div class="setting">
+        <div><b style="font-size:14.5px">Notificaciones por correo electrónico</b>
+          <p class="small muted">Envía un correo a {{ user.email }} cuando cambie el estado.</p></div>
+        <input type="checkbox" name="notificar_correo" id="id_notificar_correo"{% if prefs_notificacion.notificar_correo %} checked{% endif %}>
+      </div>
+      <div style="margin-top:14px">
+        <button class="btn btn-primary btn-sm" type="submit">Guardar canales</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card" id="historico-notificaciones">
+    <h3>Histórico de notificaciones ({{ notificaciones|length }})</h3>
+    {% if notificaciones %}
+    <div class="stack-8" style="margin-top:12px">
+      {% for n in notificaciones %}
+      <div class="setting" data-notificacion="{{ n.pk }}">
+        <div>
+          <span class="tag {{ n.estado|clase_estado }}">{{ n.get_estado_display }}</span>
+          <p class="small" style="margin-top:4px">{{ n.mensaje }}</p>
+          <p class="tiny muted">{{ n.creada_en|date:"j M Y, H:i" }}{% if n.enviada_correo %} · enviada también por correo{% endif %}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="small muted" style="margin-top:10px">Todavía no tiene notificaciones registradas.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

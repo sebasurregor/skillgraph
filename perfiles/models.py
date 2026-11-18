@@ -8,8 +8,18 @@ from vacantes.models import Habilidad
 class PerfilCandidato(models.Model):
     """Perfil laboral de un candidato. Corresponde a un nodo :Candidato del grafo."""
 
+    class Visibilidad(models.TextChoices):
+        PUBLICO = "publico", "Público"
+        PRIVADO = "privado", "Privado"
+
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                    related_name="perfil")
+    visibilidad = models.CharField(
+        max_length=10,
+        choices=Visibilidad.choices,
+        default=Visibilidad.PUBLICO,
+        help_text="Define si los datos personales y la hoja de vida son visibles.",
+    )
     nombre_completo = models.CharField(max_length=150, blank=True)
     correo = models.EmailField("correo de contacto", blank=True)
     telefono = models.CharField("teléfono", max_length=10, blank=True)
@@ -29,6 +39,10 @@ class PerfilCandidato(models.Model):
 
     def __str__(self):
         return f"Perfil de {self.usuario}"
+
+    @property
+    def es_publico(self):
+        return self.visibilidad == self.Visibilidad.PUBLICO
 
 
 class HabilidadCandidato(models.Model):

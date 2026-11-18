@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "skillgraph.disponibilidad.DisponibilidadMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -166,4 +167,6 @@ LOGGING = {
     "root": {"handlers": ["consola", "archivo"], "level": "INFO"},
 }
 
-ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY", "")
+ENCRYPTION_KEY = os.getenv(
+    "ENCRYPTION_KEY", "QGNaDW5EJj4HtYmnd6twRTadOoC-qeMp0SEzhNZ0J54="
+)

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from perfiles.models import PerfilCandidato
@@ -35,3 +36,52 @@ class Postulacion(models.Model):
 
     def __str__(self):
         return f"{self.candidato.usuario} → {self.vacante}"
+
+
+class PreferenciaNotificacion(models.Model):
+    """Configuración de los canales de notificación del candidato (HU-RF-008)."""
+
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="preferencias_notificacion",
+    )
+    notificar_plataforma = models.BooleanField(default=True)
+    notificar_correo = models.BooleanField(default=True)
+    actualizada_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "preferencia de notificación"
+        verbose_name_plural = "preferencias de notificación"
+
+    def __str__(self):
+        return f"Canales de notificación de {self.usuario}"
+
+
+class NotificacionPostulacion(models.Model):
+    """Histórico de notificaciones enviadas al candidato (HU-RF-008)."""
+
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="notificaciones_postulacion",
+    )
+    postulacion = models.ForeignKey(
+        Postulacion,
+        on_delete=models.CASCADE,
+        related_name="notificaciones",
+    )
+    estado = models.CharField(max_length=16, choices=Postulacion.Estado.choices)
+    mensaje = models.CharField(max_length=280)
+    enviada_plataforma = models.BooleanField(default=True)
+    enviada_correo = models.BooleanField(default=False)
+    leida = models.BooleanField(default=False)
+    creada_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-creada_en"]
+        verbose_name = "notificación de postulación"
+        verbose_name_plural = "notificaciones de postulaciones"
+
+    def __str__(self):
+        return f"{self.usuario} · {self.postulacion.vacante} ({self.estado})"

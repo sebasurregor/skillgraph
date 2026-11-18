@@ -9,7 +9,9 @@ from django.db.models import Count, Q
 from django.utils import timezone
 
 from GraphCore import servicio_grafo
-from vacantes.models import AreaOcupacional, Habilidad, RequisitoVacante, Vacante
+from vacantes.models import (
+    AreaOcupacional, Habilidad, RequisitoVacante, Vacante, VacanteFavorita,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -192,3 +194,70 @@ def sincronizar_vacante_en_grafo(vacante):
           "obligatoria": r.obligatoria}
          for r in vacante.requisitos.select_related("habilidad")],
     )
+
+
+# ---- Vacantes favoritas (HU-RF-010) -----------------------------------------
+
+def alternar_favorita(usuario, vacante_id):
+    """Marca o desmarca una vacante publicada como favorita.
+
+    Devuelve (vacante, guardada). Lanza ErrorDeNegocio si no está publicada.
+    """
+    vacante = Vacante.objects.filter(
+        pk=vacante_id, estado=Vacante.Estado.PUBLICADA
+    ).first()
+    if vacante is None:
+        raise ErrorDeNegocio("Esta vacante ya no está disponible.")
+    favorita, creada = VacanteFavorita.objects.get_or_create(
+        usuario=usuario, vacante=vacante
+    )
+    if not creada:
+        favorita.delete()
+        return vacante, False
+    return vacante, True
+
+
+def eliminar_favorita(usuario, vacante_id):
+    """Elimina una vacante de la lista de favoritos del usuario."""
+    eliminadas, _ = VacanteFavorita.objects.filter(
+        usuario=usuario, vacante_id=vacante_id
+    ).delete()
+    return eliminadas > 0
+
+
+def ids_favoritas(usuario):
+    """Conjunto con los ids de las vacantes favoritas del candidato."""
+    if not getattr(usuario, "is_authenticated", False):
+        return set()
+    return set(
+        VacanteFavorita.objects.filter(usuario=usuario).values_list(
+            "vacante_id", flat=True
+        )
+    )
+
+
+def favoritas_de(usuario):
+    """Devuelve las vacantes favoritas del candidato junto con su match."""
+    from matching import services as matching
+    from perfiles import services as perfiles
+
+    registros = list(
+        VacanteFavorita.objects.filter(usuario=usuario)
+        .select_related("vacante", "vacante__area")
+        .prefetch_related("vacante__requisitos__habilidad")
+        .order_by("-creada_en")
+    )
+    if not registros:
+        return {"items": [], "aviso": None}
+    perfil = perfiles.perfil_de(usuario)
+    vacantes_lista = [r.vacante for r in registros]
+    lote, aviso = matching.calcular_lote([perfil], vacantes_lista)
+    items = [
+        {
+            "favorita": r,
+            "vacante": r.vacante,
+            "match": lote[(perfil.pk, r.vacante.pk)],
+        }
+        for r in registros
+    ]
+    return {"items": items, "aviso": aviso}

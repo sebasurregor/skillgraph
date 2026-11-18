@@ -44,8 +44,8 @@ class Usuario(AbstractUser):
 
     # Para HU-RNF-007
     consentimiento_compartir_empresas = models.BooleanField(
-        default=False, 
-        help_text="El usuario autoriza compartir su perfil con empresas."
+        default=True,
+        help_text="El usuario autoriza compartir su perfil con empresas.",
     )
     solicitud_eliminacion_en = models.DateTimeField(
         null=True, blank=True, 

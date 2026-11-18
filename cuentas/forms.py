@@ -69,8 +69,8 @@ class RegistroForm(FormularioValidadoMixin, forms.Form):
     acepta_compartir_empresas = forms.BooleanField(
         label="Autorizo que mi perfil (experiencia, educación y habilidades) sea visible "
               "para las empresas reclutadoras en la plataforma.",
-        required=True, 
-        error_messages={"required": "Debe autorizar la visualización de su perfil para crear la cuenta."}
+        required=False,
+        initial=True,
     )
 
 

@@ -1,0 +1,41 @@
+{% extends "base_app.html" %}
+{% block titulo %}Perfil profesional · SkillGraph AI{% endblock %}
+{% block contenido %}
+<div class="view-head">
+  <div>
+    <p class="eyebrow">Perfil profesional</p>
+    <h1>{{ datos.nombre_completo }}</h1>
+    <p><span class="tag {% if datos.es_publico %}tag-ok{% else %}tag-neutro{% endif %}" data-visibilidad="{{ datos.visibilidad }}">{{ perfil.get_visibilidad_display }}</span></p>
+  </div>
+</div>
+
+{% if datos.datos_visibles %}
+<div class="card" data-datos-personales="visibles">
+  <h3>Datos personales y de contacto</h3>
+  <p class="small muted" style="margin-top:6px">{{ datos.correo }} · {{ datos.telefono }}{% if datos.ciudad %} · {{ datos.ciudad }}{% endif %}</p>
+  {% if datos.hoja_de_vida %}
+  <p class="small" style="margin-top:8px"><b>Hoja de vida:</b> {{ datos.hoja_de_vida.nombre_original }}</p>
+  {% endif %}
+</div>
+<div class="grid-2" style="margin-top:16px">
+  <div class="card"><h3>Experiencia</h3><p class="texto-largo" style="margin-top:8px">{{ datos.experiencia|default:"Sin experiencia registrada." }}</p></div>
+  <div class="card"><h3>Educación</h3><p class="texto-largo" style="margin-top:8px">{{ datos.educacion|default:"Sin estudios registrados." }}</p></div>
+</div>
+{% else %}
+<div class="card" data-datos-personales="ocultos">
+  <h3>Información personal protegida</h3>
+  <p class="small muted" style="margin-top:6px">Este candidato configuró su perfil como privado. Sus datos de contacto y hoja de vida están ocultos.</p>
+</div>
+{% endif %}
+
+<div class="card" style="margin-top:16px">
+  <h3>Habilidades ({{ datos.habilidades|length }})</h3>
+  <div class="tags">
+    {% for nombre, nivel in datos.habilidades.items %}
+    <span class="tag tag-ok">{{ nombre }} · nivel {{ nivel }}</span>
+    {% empty %}
+    <span class="small muted">Sin habilidades declaradas.</span>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

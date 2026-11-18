@@ -15,6 +15,27 @@
   </div>
 </div>
 
+<div class="card" style="margin-bottom:16px" id="config-visibilidad">
+  <div class="row between center wrap">
+    <div>
+      <h3>Visibilidad de su perfil</h3>
+      <p class="small muted" style="margin-top:4px">
+        Estado actual: <span class="tag {% if perfil.es_publico %}tag-ok{% else %}tag-neutro{% endif %}" data-visibilidad="{{ perfil.visibilidad }}">{{ perfil.get_visibilidad_display }}</span>
+        · {% if perfil.es_publico %}Su información personal y hoja de vida son visibles.{% else %}Sus datos personales y hoja de vida están ocultos para terceros.{% endif %}
+      </p>
+    </div>
+    <form method="post" action="{% url 'perfiles:visibilidad' %}" class="row center">
+      {% csrf_token %}
+      <label class="small muted" for="id_visibilidad">Visibilidad</label>
+      <select class="select" name="visibilidad" id="id_visibilidad" style="width:auto">
+        <option value="publico"{% if perfil.es_publico %} selected{% endif %}>Público</option>
+        <option value="privado"{% if not perfil.es_publico %} selected{% endif %}>Privado</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" type="submit">Guardar visibilidad</button>
+    </form>
+  </div>
+</div>
+
 {% if perfil.confirmado %}
 <div class="card">
   <h3>Datos de contacto</h3>

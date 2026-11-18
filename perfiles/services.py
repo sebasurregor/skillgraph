@@ -213,3 +213,46 @@ def guardar_preferencias(perfil, datos, por_aprender=None):
         perfil.por_aprender.set(por_aprender)
     logger.info("Preferencias del usuario %s actualizadas", perfil.usuario_id)
     return preferencias
+
+
+# ---- Visibilidad del perfil (HU-RF-009) ---------------------------------------
+
+def cambiar_visibilidad(perfil, visibilidad):
+    """Configura el perfil como público o privado en cualquier momento."""
+    if visibilidad not in PerfilCandidato.Visibilidad.values:
+        raise ValueError("Visibilidad no válida.")
+    perfil.visibilidad = visibilidad
+    perfil.save(update_fields=["visibilidad", "actualizado_en"])
+    usuario = perfil.usuario
+    usuario.consentimiento_compartir_empresas = (
+        visibilidad == PerfilCandidato.Visibilidad.PUBLICO
+    )
+    usuario.save(update_fields=["consentimiento_compartir_empresas"])
+    logger.info("Visibilidad del perfil %s cambiada a %s", perfil.pk, visibilidad)
+    return perfil
+
+
+def datos_visibles_de(perfil, solicitante=None):
+    """Oculta o muestra datos personales y hoja de vida según la configuración."""
+    es_dueno = solicitante is not None and solicitante == perfil.usuario
+    mostrar = es_dueno or perfil.es_publico
+    vigente = version_vigente(perfil)
+    hoja = (
+        vigente.hoja_de_vida
+        if (vigente and vigente.hoja_de_vida_id)
+        else perfil.hojas_de_vida.first()
+    )
+    nombre_real = perfil.nombre_completo or perfil.usuario.get_full_name()
+    return {
+        "visibilidad": perfil.visibilidad,
+        "es_publico": perfil.es_publico,
+        "datos_visibles": mostrar,
+        "nombre_completo": nombre_real if mostrar else "Perfil privado",
+        "correo": (perfil.correo or perfil.usuario.email) if mostrar else None,
+        "telefono": (perfil.telefono or perfil.usuario.telefono) if mostrar else None,
+        "ciudad": perfil.usuario.ciudad if mostrar else None,
+        "experiencia": perfil.experiencia if mostrar else "",
+        "educacion": perfil.educacion if mostrar else "",
+        "hoja_de_vida": hoja if mostrar else None,
+        "habilidades": niveles_de(perfil),
+    }

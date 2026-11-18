@@ -109,3 +109,29 @@ class RequisitoVacante(models.Model):
 
     def __str__(self):
         return f"{self.vacante} · {self.habilidad} ({self.peso})"
+
+
+class VacanteFavorita(models.Model):
+    """Vacante guardada como favorita por un candidato (HU-RF-010)."""
+
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="favoritas"
+    )
+    vacante = models.ForeignKey(
+        Vacante, on_delete=models.CASCADE, related_name="favoritos"
+    )
+    creada_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-creada_en"]
+        verbose_name = "vacante favorita"
+        verbose_name_plural = "vacantes favoritas"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "vacante"],
+                name="una_favorita_por_usuario_y_vacante",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.usuario} ♥ {self.vacante}"

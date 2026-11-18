@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import redirect
 
 from perfiles import services as perfiles
+from skillgraph.disponibilidad import estado_salud
 
 
 @login_required
@@ -17,3 +19,9 @@ def portada(request):
     if not perfiles.tiene_perfil_confirmado(usuario):
         return redirect("perfiles:cargar_cv")
     return redirect("recomendaciones:lista")
+
+
+def salud(request):
+    """Endpoint de disponibilidad del sistema (HU-RNF-003)."""
+    datos = estado_salud()
+    return JsonResponse(datos, status=200 if datos["disponible"] else 503)

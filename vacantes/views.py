@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from cuentas.models import Usuario
@@ -10,6 +11,7 @@ from vacantes.forms import RequisitoFormSet, VacanteForm
 from vacantes.models import Vacante
 
 solo_reclutador = rol_requerido(Usuario.Rol.RECLUTADOR)
+solo_candidato = rol_requerido(Usuario.Rol.CANDIDATO)
 PREFIJO = "req"
 AVISO_GRAFO = ("El grafo de Neo4j no está disponible en este momento. Los datos quedaron "
                "guardados y se sincronizarán después.")
@@ -102,3 +104,46 @@ def eliminar(request, pk):
         return redirect("vacantes:lista")
     return render(request, "vacantes/confirmar_eliminar.html", {
         "vacante": vacante, "seccion": "vacantes"})
+
+
+# ---- Candidato: vacantes favoritas (HU-RF-010) ------------------------------
+
+def _volver(request, defecto):
+    destino = request.POST.get("siguiente", "")
+    if url_has_allowed_host_and_scheme(destino, allowed_hosts={request.get_host()}):
+        return redirect(destino)
+    return redirect(defecto)
+
+
+@solo_candidato
+def favoritas(request):
+    """Sección dedicada para visualizar todas las vacantes guardadas."""
+    resultado = services.favoritas_de(request.user)
+    return render(request, "vacantes/favoritas.html", {
+        **resultado,
+        "favoritas_ids": services.ids_favoritas(request.user),
+        "seccion": "favoritas",
+    })
+
+
+@solo_candidato
+@require_POST
+def alternar_favorita(request, pk):
+    try:
+        _, guardada = services.alternar_favorita(request.user, pk)
+    except services.ErrorDeNegocio as exc:
+        messages.error(request, " ".join(exc.errores))
+        return _volver(request, "recomendaciones:lista")
+    if guardada:
+        messages.success(request, "Vacante guardada en sus favoritos.")
+    else:
+        messages.info(request, "Vacante retirada de sus favoritos.")
+    return _volver(request, "recomendaciones:lista")
+
+
+@solo_candidato
+@require_POST
+def eliminar_favorita(request, pk):
+    if services.eliminar_favorita(request.user, pk):
+        messages.info(request, "Vacante retirada de sus favoritos.")
+    return _volver(request, "vacantes:favoritas")

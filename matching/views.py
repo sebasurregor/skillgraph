@@ -4,6 +4,7 @@ from cuentas.models import Usuario
 from cuentas.permisos import rol_requerido
 from matching import services
 from perfiles import services as perfiles
+from vacantes import services as vacantes
 
 solo_candidato = rol_requerido(Usuario.Rol.CANDIDATO)
 
@@ -22,4 +23,5 @@ def recomendaciones(request):
     return render(request, "matching/recomendaciones.html", {
         **resultado, "perfil": perfil, "orden": orden, "ordenes": ORDENES, "todas": todas,
         "preferencias": perfiles.preferencias_de(perfil), "pesos": services.pesos(),
+        "favoritas_ids": vacantes.ids_favoritas(request.user),
         "seccion": "recomendaciones"})
