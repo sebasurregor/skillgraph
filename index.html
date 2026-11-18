@@ -344,6 +344,79 @@ a{color:var(--navy-2)}
 @keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 .rise{animation:rise .3s var(--ease) both}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Ajustes propios de la aplicación Django sobre el sistema de diseño del prototipo
+   (static/css/skillgraph.css, copiado sin cambios de prototipo/index.html). */
+
+a.btn, a.rail-btn{text-decoration:none}
+.rail form{display:contents}
+
+/* Casillas y opciones de radio también se resaltan cuando son inválidas */
+input[type="checkbox"], input[type="radio"]{width:18px;height:18px;accent-color:#0DBA4E;flex:none}
+input[type="checkbox"].is-invalid, input[type="radio"].is-invalid{outline:2px solid var(--danger);outline-offset:2px}
+.opt:has(input:checked){border-color:var(--green);background:var(--green-soft);color:#0A6B32;font-weight:600}
+
+/* Tablas (listas con una acción por registro) */
+.tabla-card{padding:6px 10px;overflow-x:auto}
+.tabla{width:100%;border-collapse:collapse;font-size:14px}
+.tabla th{text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);padding:12px 10px;border-bottom:1.5px solid var(--line)}
+.tabla td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tabla tr:last-child td{border-bottom:none}
+.tabla .centro{text-align:center}
+.acciones{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.acciones form{display:inline}
+.btn-sm{padding:8px 13px;font-size:13px}
+.btn-peligro{background:var(--danger);color:#fff}
+.peligro{color:var(--danger)}
+.tag-neutro{background:var(--sky-soft);color:var(--navy-2)}
+.suma-ok b{color:#0A6B32}
+.suma-mal b{color:var(--danger)}
+.solo-lectores{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.alert-aviso{background:var(--warn-soft);border:1.5px solid var(--warn);color:var(--warn);font-weight:500}
+
+/* Perfil del candidato (HU-RF-003) */
+.input.sin-extraer,.textarea.sin-extraer{border-color:var(--warn);background:var(--warn-soft)}
+.bloque-sin-extraer{border:1.5px solid var(--warn);background:var(--warn-soft);border-radius:var(--r-md);padding:12px 14px}
+.aviso-campo{font-size:11.5px;color:var(--warn);margin-top:5px;font-weight:600}
+.drop input[type="file"]{margin-top:14px;max-width:100%}
+.drop.is-invalid{border-color:var(--danger);background:var(--danger-soft)}
+.habs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.hab{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-size:13.5px;cursor:pointer}
+.hab:hover{border-color:var(--sky);background:var(--sky-soft)}
+.hab select{display:none;border:none;background:transparent;font-weight:700;padding:0 2px}
+.hab:has(input:checked){background:var(--green-soft);border-color:var(--green);color:#0A6B32;font-weight:600}
+.hab:has(input:checked) select{display:inline-block}
+.grupo-habs{border-top:1px solid var(--line);padding:12px 0}
+.grupo-habs summary{cursor:pointer;font-weight:600;font-size:14px}
+.grupo-habs.is-invalid{outline:2px solid var(--danger);outline-offset:6px;border-radius:var(--r-sm)}
+.texto-largo{white-space:pre-line;font-size:14px;line-height:1.55}
+
+/* Recomendaciones y explicación del match (HU-RF-005) */
+a.chip{text-decoration:none;color:inherit}
+.porque{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.porque summary{list-style:none;display:inline-flex}
+.porque summary::-webkit-details-marker{display:none}
+.porque[open] summary{background:var(--sky-soft);border-color:var(--sky)}
+.fila-habilidad{margin-top:7px;line-height:1.9}
+.comp .cv{width:110px}
+
+/* Postulaciones (HU-RF-006 y HU-RF-013) */
+.job-actions+.porque{border-top:none;padding-top:0;margin-top:12px}
+.form-postular{display:inline}
+.tag-aviso{background:var(--warn-soft);color:var(--warn)}
+.job-actions form.row{gap:8px}
+
+/* Habilidades por debajo del nivel exigido: naranja, más claro cuanto más cerca del nivel */
+.tag-brecha{border:1px solid transparent}
+.brecha-1{background:#FFF5E6;color:#A8640F;border-color:#FBE3BF}
+.brecha-2{background:#FDE7C4;color:#96560A;border-color:#F8D49B}
+.brecha-3{background:#FAD49B;color:#7E4506;border-color:#F3BD72}
+.brecha-4{background:#F5BD6E;color:#653503;border-color:#EBA548}
+.alert-nivel{background:#FFF8EE;border:1.5px solid #F8D49B;color:#96560A;font-weight:500;flex-wrap:wrap;align-items:center}
+.cambios{background:var(--sky-soft);border:1.5px solid var(--sky);border-radius:var(--r-md);padding:13px 15px;margin-bottom:14px}
+.sube{color:#0A6B32;font-weight:700}
+.baja{color:var(--danger);font-weight:700}
+
 </style>
 </head>
 <body>
@@ -385,7 +458,7 @@ a{color:var(--navy-2)}
         <div class="field">
           <label for="i-email">Correo electrónico <span class="req">*</span></label>
           <input class="input" type="email" id="i-email" name="email" placeholder="nombre@correo.com" autocomplete="email">
-          <p class="hint">Cuentas de prueba (contraseña <b>skillgraph2026</b>):<br>
+          <p class="hint">Cuentas de demostración (contraseña <b>skillgraph2026</b>):<br>
             Candidatos: <b>ana.rios@correo.com</b> · <b>camilo.zapata@correo.com</b><br>
             Reclutadora: <b>reclutador@skillgraph.co</b></p>
           <div class="row wrap" style="margin-top:10px;gap:6px">
@@ -479,6 +552,19 @@ a{color:var(--navy-2)}
       <div id="su-alert" class="hidden" style="margin-top:18px"></div>
 
       <form id="form-signup" style="margin-top:18px" novalidate>
+        <div class="field" style="margin-bottom:14px">
+          <label>¿Para qué va a usar SkillGraph AI? <span class="req">*</span></label>
+          <div class="grid-2" id="su-rol-picker">
+            <button type="button" class="opt" data-su-rol="candidato" aria-pressed="true">
+              <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
+              <span>Busco empleo</span>
+            </button>
+            <button type="button" class="opt" data-su-rol="reclutador" aria-pressed="false">
+              <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
+              <span>Publico vacantes</span>
+            </button>
+          </div>
+        </div>
         <div class="grid-2">
           <div class="field"><label for="i-nom">Nombres <span class="req">*</span></label>
             <input class="input" id="i-nom" name="nombres" placeholder="Ana María"></div>
@@ -496,6 +582,10 @@ a{color:var(--navy-2)}
               <option>Medellín</option><option>Bogotá</option><option>Cali</option>
               <option>Barranquilla</option><option>Bucaramanga</option><option>Pereira</option><option>Otra</option>
             </select></div>
+        </div>
+        <div class="field hidden" id="su-empresa-wrap" style="margin-top:14px">
+          <label for="i-empresa">Empresa <span class="req">*</span></label>
+          <input class="input" id="i-empresa" name="empresa" placeholder="Nombre de su empresa">
         </div>
         <div class="grid-2" style="margin-top:14px">
           <div class="field"><label for="i-pw1">Contraseña <span class="req">*</span></label>
@@ -734,10 +824,17 @@ a{color:var(--navy-2)}
       <span class="rail-tip">Mis postulaciones</span>
     </button>
 
-    <button class="rail-btn hidden" data-tab="reclutador" data-rol-nav="reclutador" aria-label="Mis vacantes y postulados">
+    <button class="rail-btn hidden" data-tab="vacantes-rec" data-rol-nav="reclutador" aria-label="Mis vacantes">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
         <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg>
       <span class="rail-tip">Mis vacantes</span>
+    </button>
+
+    <button class="rail-btn hidden" data-tab="reclutador" data-rol-nav="reclutador" aria-label="Postulaciones recibidas">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="badge" id="rec-post-badge">5</span>
+      <span class="rail-tip">Ver postulaciones</span>
     </button>
 
     <button class="rail-btn" data-tab="status" aria-label="Disponibilidad del sistema">
@@ -754,6 +851,11 @@ a{color:var(--navy-2)}
     </button>
 
     <div class="rail-spacer"></div>
+    <button class="rail-btn" id="rail-logout" type="button" aria-label="Cerrar sesión">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l4-4-4-4M14 12H4"/></svg>
+      <span class="rail-tip">Cerrar sesión</span>
+    </button>
     <div class="avatar" id="rail-avatar" title="Su cuenta">AR</div>
   </nav>
 
@@ -809,37 +911,35 @@ a{color:var(--navy-2)}
       <div id="saved-list" class="stack-16"></div>
     </div>
 
-    <!-- ---------- MIS POSTULACIONES Y NOTIFICACIONES ---------- -->
+    <!-- ---------- MIS POSTULACIONES Y NOTIFICACIONES (CANDIDATO) ---------- -->
     <div class="view hidden" id="tab-postulaciones">
       <div class="view-head">
         <div>
           <p class="eyebrow">Mis postulaciones</p>
           <h1>Estado de sus postulaciones</h1>
-          <p>Consulte el avance de sus procesos de selección, configure sus canales de alerta y revise su histórico de notificaciones.</p>
+          <p>Aquí ve cada vacante a la que se postuló, el avance del proceso y su histórico de notificaciones.</p>
         </div>
       </div>
       <div id="postulaciones-body"></div>
     </div>
 
-    <!-- ---------- VISTA EXCLUSIVA DE RECLUTADOR ---------- -->
+    <!-- ---------- MIS VACANTES (RECLUTADOR - Laura) ---------- -->
+    <div class="view hidden" id="tab-vacantes-rec">
+      <div id="vacantes-rec-body"></div>
+    </div>
+
+    <!-- ---------- POSTULACIONES DE VACANTE PRIORIZADAS POR MATCH (RECLUTADOR - Laura) ---------- -->
     <div class="view hidden" id="tab-reclutador">
-      <div class="view-head">
-        <div>
-          <p class="eyebrow" id="rec-eyebrow">Reclutador · Magneto Empleos</p>
-          <h1>Mis vacantes y candidatos postulados</h1>
-          <p>Revise los candidatos ordenados por porcentaje de ajuste, verifique sus perfiles y actualice el estado de sus postulaciones.</p>
-        </div>
-      </div>
       <div id="reclutador-body"></div>
     </div>
 
-    <!-- ---------- MONITOR DE DISPONIBILIDAD Y RENDIMIENTO (FUERA DE AJUSTES) ---------- -->
+    <!-- ---------- DISPONIBILIDAD DEL SISTEMA ---------- -->
     <div class="view hidden" id="tab-status">
       <div class="view-head">
         <div>
           <p class="eyebrow">Estado de la plataforma</p>
           <h1>Disponibilidad y rendimiento del sistema</h1>
-          <p>Monitoreo en tiempo real del nivel de servicio mensual y tiempos de respuesta bajo concurrencia.</p>
+          <p>Monitoreo continuo del nivel de servicio mensual y tiempos de respuesta bajo concurrencia.</p>
         </div>
       </div>
       <div id="status-body"></div>
@@ -888,18 +988,108 @@ const CUENTAS = {
     pw: "skillgraph2026", nombres: "Laura", apellidos: "Gómez Restrepo",
     telefono: "3015550101", ciudad: "Medellín", empresa: "Magneto Empleos",
     cargo: "Líder de Selección", rol: "reclutador", demoKey: "r"
+  },
+  "reclutador@correo.com": {
+    pw: "skillgraph2026", nombres: "Laura", apellidos: "Gómez Restrepo",
+    telefono: "3015550101", ciudad: "Medellín", empresa: "Magneto Empleos",
+    cargo: "Líder de Selección", rol: "reclutador", demoKey: "r"
   }
 };
 
 const state = {
   email: "", user: null, respuestas: {}, skills: {},
   perfil: {}, docs: {}, guardadas: new Set(),
+  suRol: "candidato",
+  recVacanteSeleccionada: 128,
+  recSoloObligatorias: false,
+  recEditandoVacante: null,
+  postulantesPorVacante: {
+    128: [
+      {
+        id: 101,
+        candidatoKey: "elena",
+        nombre: "Elena Prueba",
+        correo: "experta@correo.com",
+        telefono: "3001112233",
+        ciudad: "Medellín",
+        cv: "cv_elena_backend.pdf",
+        experiencia: "Ocho años como desarrolladora backend en sistemas distribuidos y grafos.",
+        educacion: "Ingeniería de Sistemas, Universidad EAFIT",
+        fecha: "15 nov 2026",
+        estado: "preseleccionada",
+        skills: { "Python": 5, "Django": 5, "Neo4j / Cypher": 4, "Docker": 3, "Scrum": 3 },
+        aprender: ["AWS"]
+      },
+      {
+        id: 102,
+        candidatoKey: "ana",
+        nombre: "Ana María Ríos Bedoya",
+        correo: "ana.rios@correo.com",
+        telefono: "3001234567",
+        ciudad: "Medellín",
+        cv: "hoja_de_vida_ana_rios.pdf",
+        experiencia: "TechNova S.A.S. — Desarrolladora backend (2021 a la fecha)\nAndes Analytics — Analista de datos (2019 a 2021)",
+        educacion: "Ingeniería de Sistemas, Universidad EAFIT, 2019",
+        fecha: "17 nov 2026",
+        estado: "en_revision",
+        skills: { "Python": 5, "Django": 3, "SQL": 4, "Docker": 3, "Git": 5, "Scrum": 3, "Linux": 4 },
+        aprender: ["Neo4j / Cypher", "AWS"]
+      },
+      {
+        id: 103,
+        candidatoKey: "andres",
+        nombre: "Andrés Prueba",
+        correo: "aprendiz@correo.com",
+        telefono: "3009998877",
+        ciudad: "Medellín",
+        cv: null,
+        experiencia: "Un año como practicante de desarrollo de software.",
+        educacion: "Tecnólogo en Sistemas",
+        fecha: "16 nov 2026",
+        estado: "enviada",
+        skills: { "Python": 2, "Scrum": 2 },
+        aprender: ["Django", "Docker"]
+      },
+      {
+        id: 104,
+        candidatoKey: "camilo",
+        nombre: "Camilo Zapata Ospina",
+        correo: "camilo.zapata@correo.com",
+        telefono: "3109876543",
+        ciudad: "Medellín",
+        cv: "hoja_de_vida_camilo_zapata.pdf",
+        experiencia: "Distribuidora El Paisa — Auxiliar de cargue (temporada 2024)",
+        educacion: "Bachiller académico, 2022",
+        fecha: "17 nov 2026",
+        estado: "enviada",
+        skills: { "Trabajo en equipo": 4, "Puntualidad": 5, "Atención al cliente": 3, "Carga y descarga": 3, "Alistamiento de pedidos": 2 },
+        aprender: ["Manejo de inventarios", "Manejo de caja"]
+      }
+    ],
+    201: [
+      {
+        id: 201,
+        candidatoKey: "camilo",
+        nombre: "Camilo Zapata Ospina",
+        correo: "camilo.zapata@correo.com",
+        telefono: "3109876543",
+        ciudad: "Medellín",
+        cv: "hoja_de_vida_camilo_zapata.pdf",
+        experiencia: "Distribuidora El Paisa — Auxiliar de cargue (temporada 2024)",
+        educacion: "Bachiller académico, 2022",
+        fecha: "17 nov 2026",
+        estado: "enviada",
+        skills: { "Picking y packing": 3, "Trabajo en equipo": 4, "Puntualidad": 5, "Carga y descarga": 3, "Alistamiento de pedidos": 2 },
+        aprender: ["Manejo de inventarios", "Manejo de caja"]
+      }
+    ]
+  },
   postulaciones: [
-    { id: 1, vacanteId: 128, fecha: "17 nov 2026, 14:20", estado: "en_revision", pct: 82 }
+    { id: 102, vacanteId: 128, fecha: "17 nov 2026, 14:20", estado: "en_revision", pct: 82 }
   ],
   canalesNotif: { plataforma: true, correo: true },
   notificaciones: [
-    { id: 1, vacanteId: 128, estado: "en_revision", etiqueta: "Vista (En revisión)",
+    { id: 1, vacanteId: 128, estado: "en_revision", etiqueta: "En revisión",
       mensaje: "Su postulación a «Desarrollador Backend Senior» en TechNova S.A.S. fue vista y está en revisión.",
       fecha: "17 nov 2026, 15:05", correoEnviado: true, plataformaEnviado: true }
   ],
@@ -1262,7 +1452,20 @@ $("#form-pw").addEventListener("submit", e => {
   }
   state.user = { nombres:c.nombres, apellidos:c.apellidos, email:state.email,
                  telefono:c.telefono || "", ciudad:c.ciudad || "", rol: c.rol || "candidato",
-                 empresa: c.empresa || "" };
+                 empresa: c.empresa || "Mi Empresa S.A.S.", cargo: c.cargo || "Reclutador" };
+  if(state.user.rol === "reclutador"){
+    state.perfil = {
+      nombre: [c.nombres, c.apellidos].filter(Boolean).join(" "),
+      empresa: state.user.empresa,
+      cargo: state.user.cargo,
+      tel: c.telefono || "",
+      mail: state.email,
+      ciudad: c.ciudad || "Medellín"
+    };
+    abrirApp();
+    toast("Sesión iniciada como reclutador de " + state.user.empresa + ".");
+    return;
+  }
   entrarOnboarding();
 });
 
@@ -1293,12 +1496,19 @@ $("#form-signup").addEventListener("submit", e => {
   state.email = $("#i-mail2").value.trim().toLowerCase();
   // La cuenta queda creada, pero el ingreso se hace desde la pantalla de inicio de
   // sesión: así el usuario confirma que recuerda la contraseña que acaba de definir.
+  if(state.suRol === "reclutador" && !$("#i-empresa").value.trim()){
+    $("#i-empresa").classList.add("is-invalid");
+    alerta("#su-alert","error","Indique la empresa para la que publica vacantes.");
+    $("#i-empresa").focus(); return;
+  }
   CUENTAS[state.email] = {
     pw: $("#i-pw1").value,
     nombres: $("#i-nom").value.trim(),
     apellidos: $("#i-ape").value.trim(),
     telefono: $("#i-tel").value.trim(),
-    ciudad: $("#i-ciudad").value
+    ciudad: $("#i-ciudad").value,
+    rol: state.suRol || "candidato",
+    empresa: state.suRol === "reclutador" ? $("#i-empresa").value.trim() : ""
   };
   $("#form-signup").reset();
   $("#pw-email-echo").textContent = state.email;
@@ -1606,14 +1816,13 @@ function texto(v, m){
 /* =====================================================================
    7 · Interfaz de la aplicación
    ===================================================================== */
-const TODAS_TABS = ["search","saved","postulaciones","reclutador","status","settings"];
+const TODAS_TABS = ["search","saved","postulaciones","vacantes-rec","reclutador","status","settings"];
 
 function configurarVistaPorRol(){
   const esReclutador = state.user && state.user.rol === "reclutador";
   $$('[data-rol-nav="candidato"]').forEach(b => b.classList.toggle("hidden", esReclutador));
   $$('[data-rol-nav="reclutador"]').forEach(b => b.classList.toggle("hidden", !esReclutador));
 
-  // En Ajustes, ocultar pestañas exclusivas de candidato cuando el usuario es reclutador
   $$('#settings-tabs .tab').forEach(t => {
     if(t.dataset.st === "hv" || t.dataset.st === "priv"){
       t.classList.toggle("hidden", esReclutador);
@@ -1622,18 +1831,19 @@ function configurarVistaPorRol(){
   if(esReclutador && (state.stab === "hv" || state.stab === "priv")){
     state.stab = "perfil";
   }
+  actualizarBadgeReclutador();
 }
 
 function cambiarTab(tabName){
   const esReclutador = state.user && state.user.rol === "reclutador";
   if(esReclutador && ["search","saved","postulaciones"].includes(tabName)){
-    tabName = "reclutador";
+    tabName = "vacantes-rec";
   }
-  if(!esReclutador && tabName === "reclutador"){
+  if(!esReclutador && ["vacantes-rec","reclutador"].includes(tabName)){
     tabName = "search";
   }
   state.tab = tabName;
-  $$(".rail-btn").forEach(x => x.classList.toggle("active", x.dataset.tab === tabName));
+  $$(".rail-btn[data-tab]").forEach(x => x.classList.toggle("active", x.dataset.tab === tabName));
   TODAS_TABS.forEach(t => {
     const el = $("#tab-"+t);
     if(el) el.classList.toggle("hidden", t !== tabName);
@@ -1641,10 +1851,24 @@ function cambiarTab(tabName){
   if(tabName === "search") pintarVacantes();
   if(tabName === "saved") pintarGuardadas();
   if(tabName === "postulaciones") pintarPostulaciones();
+  if(tabName === "vacantes-rec") pintarVacantesReclutador();
   if(tabName === "reclutador") pintarReclutador();
   if(tabName === "status") pintarStatus();
   if(tabName === "settings") pintarAjustes();
   if(window.scrollTo) try { window.scrollTo({top:0}); } catch(_){}
+}
+
+function cerrarSesionApp(){
+  state.user = null;
+  state.guardadas.clear();
+  badge();
+  state.query = ""; state.filtro = "todas"; state.skills = {}; state.respuestas = {};
+  if($("#q")) $("#q").value = "";
+  if($("#i-email")) $("#i-email").value = "";
+  if($("#i-pw")) $("#i-pw").value = "";
+  limpiarAlerta("#email-alert");
+  ir("#s-email");
+  toast("Sesión cerrada.");
 }
 
 function abrirApp(){
@@ -1655,12 +1879,13 @@ function abrirApp(){
   configurarVistaPorRol();
   pintarFiltros(); pintarRecientes(); pintarVacantes(); pintarAjustes();
   ir("#s-app");
-  cambiarTab(u.rol === "reclutador" ? "reclutador" : "search");
+  cambiarTab(u.rol === "reclutador" ? "vacantes-rec" : "search");
 }
 
-$$(".rail-btn").forEach(b => b.addEventListener("click", () => {
+$$(".rail-btn[data-tab]").forEach(b => b.addEventListener("click", () => {
   cambiarTab(b.dataset.tab);
 }));
+if($("#rail-logout")) $("#rail-logout").addEventListener("click", cerrarSesionApp);
 
 const FILTROS = ["todas","Presencial","Remoto","Temporal","Medio tiempo","Por turnos","Sin brechas"];
 function pintarFiltros(){
@@ -1858,9 +2083,31 @@ function enlazarTarjetas(cont){
     const v = VACANTES.find(x => x.id === +b.dataset.apply);
     if(!state.postulaciones.some(p => p.vacanteId === v.id)){
       const m = calcular(v);
+      const nuevaId = Date.now();
       state.postulaciones.unshift({
-        id: Date.now(), vacanteId: v.id, fecha: "Hoy, ahora mismo", estado: "enviada", pct: m.pct
+        id: nuevaId, vacanteId: v.id, fecha: "Hoy, ahora mismo", estado: "enviada", pct: m.pct
       });
+      const u = state.user || {};
+      const nombreCand = state.perfil.nombre || [u.nombres, u.apellidos].filter(Boolean).join(" ") || "Ana María Ríos Bedoya";
+      const listaVac = state.postulantesPorVacante[v.id] || (state.postulantesPorVacante[v.id] = []);
+      if(!listaVac.some(x => x.correo === (u.email || "ana.rios@correo.com"))){
+        listaVac.push({
+          id: nuevaId,
+          candidatoKey: (u.email || "").includes("camilo") ? "camilo" : "ana",
+          nombre: nombreCand,
+          correo: u.email || "ana.rios@correo.com",
+          telefono: u.telefono || "3001234567",
+          ciudad: u.ciudad || "Medellín",
+          cv: state.docs.cv ? state.docs.cv.nombre : "hoja_de_vida.pdf",
+          experiencia: "Experiencia registrada en el perfil confirmado.",
+          educacion: "Educación registrada en el perfil confirmado.",
+          fecha: "Hoy",
+          estado: "enviada",
+          skills: {...state.skills},
+          aprender: [...(state.respuestas.aprender || [])]
+        });
+      }
+      actualizarBadgeReclutador();
     }
     b.textContent = "Postulación enviada ✓";
     b.classList.remove("btn-accent"); b.classList.add("btn-ghost"); b.disabled = true;
@@ -2241,14 +2488,28 @@ addEventListener("keydown", e => {
 });
 
 /* =====================================================================
-   9 · Postulaciones, Notificaciones, Reclutador y Disponibilidad
+   9 · Vistas completas de Reclutador (Mis vacantes y Postulaciones por vacante)
+       + Postulaciones/Notificaciones de candidato y Disponibilidad
    ===================================================================== */
+VACANTES.forEach(v => {
+  if(v.publicada === undefined) v.publicada = true;
+});
+
 const ESTADOS_META = {
-  enviada: { nombre: "Enviada", cls: "chip-soft" },
-  en_revision: { nombre: "Vista (En revisión)", cls: "tag-ok" },
-  preseleccionada: { nombre: "Aceptada (Preseleccionada)", cls: "tag-ok" },
-  descartada: { nombre: "Rechazada (Descartada)", cls: "tag-miss" }
+  enviada: { nombre: "Enviada", cls: "tag-neutro" },
+  en_revision: { nombre: "En revisión", cls: "tag-neutro" },
+  preseleccionada: { nombre: "Preseleccionada", cls: "tag-ok" },
+  descartada: { nombre: "Descartada", cls: "tag-miss" }
 };
+
+// Selector de rol en pantalla de registro
+$$("#su-rol-picker .opt").forEach(b => b.addEventListener("click", () => {
+  $$("#su-rol-picker .opt").forEach(o => o.setAttribute("aria-pressed", "false"));
+  b.setAttribute("aria-pressed", "true");
+  state.suRol = b.dataset.suRol;
+  const wrap = $("#su-empresa-wrap");
+  if(wrap) wrap.classList.toggle("hidden", state.suRol !== "reclutador");
+}));
 
 function badgeNotif(){
   const b = $("#notif-badge");
@@ -2258,23 +2519,85 @@ function badgeNotif(){
   b.classList.toggle("hidden", visibles === 0);
 }
 
-function emitirNotificacionEstado(vacanteId, nuevoEstado){
+function totalPostulacionesReclutador(){
+  return Object.values(state.postulantesPorVacante).reduce((acc, arr) => acc + arr.length, 0);
+}
+
+function actualizarBadgeReclutador(){
+  const b = $("#rec-post-badge");
+  if(!b) return;
+  const n = totalPostulacionesReclutador();
+  b.textContent = n;
+  b.classList.toggle("hidden", n === 0);
+}
+
+function esObligatoriaReq(vacanteId, idx, peso){
+  if(vacanteId === 128) return idx < 3; // Python, Django, Neo4j / Cypher son las 3 obligatorias de Backend Senior
+  return idx < 2 || peso >= 0.25;
+}
+
+function calcularMatchCandidatoVacante(skillsCand, aprenderCand, v){
+  let total = 0, cubierto = 0, nivelPond = 0;
+  const cubiertas = [], faltantes = [];
+  const aprenderSet = new Set(aprenderCand || []);
+  v.req.forEach(([nombre, peso, min], idx) => {
+    total += peso;
+    const obligatoria = esObligatoriaReq(v.id, idx, peso);
+    const declarado = skillsCand[nombre];
+    if(declarado !== undefined){
+      cubierto += peso;
+      nivelPond += peso * Math.min(1, declarado / min);
+      cubiertas.push({nombre, peso, nivel: declarado, nivel_min: min, obligatoria});
+    } else {
+      faltantes.push({nombre, peso, min, nivel_min: min, obligatoria});
+    }
+  });
+  const cobertura = total ? cubierto / total : 0;
+  const nivel = cubierto ? nivelPond / cubierto : 0;
+  const adyacencia = faltantes.length
+    ? faltantes.filter(f => aprenderSet.has(f.nombre)).length / faltantes.length * 0.9 + 0.1
+    : 0.9;
+  const score = PESOS.cobertura * cobertura + PESOS.nivel * nivel
+              + PESOS.centralidad * v.centralidad + PESOS.adyacencia * adyacencia;
+  const potencial = PESOS.cobertura * 1 + PESOS.nivel * Math.max(nivel, 0.9)
+              + PESOS.centralidad * v.centralidad + PESOS.adyacencia * adyacencia;
+  cubiertas.sort((a,b) => b.peso - a.peso);
+  faltantes.sort((a,b) => b.peso - a.peso);
+  const obligatoriasFaltantes = faltantes.filter(f => f.obligatoria);
+  const obligatoriasBajoNivel = cubiertas.filter(c => c.obligatoria && c.nivel < c.nivel_min);
+  const cumpleObligatorias = obligatoriasFaltantes.length === 0 && obligatoriasBajoNivel.length === 0;
+  return {
+    pct: Math.round(score * 100),
+    pctPot: Math.round(Math.min(potencial, 1) * 100),
+    cobertura, nivel, centralidad: v.centralidad, adyacencia,
+    cubiertas, faltantes,
+    obligatoriasFaltantes, obligatoriasBajoNivel, cumpleObligatorias
+  };
+}
+
+function claseNivelTag(c){
+  const brecha = c.nivel_min - c.nivel;
+  if(brecha <= 0) return "tag-ok";
+  return "tag-brecha brecha-" + Math.min(4, Math.max(1, brecha));
+}
+
+function emitirNotificacionEstado(vacanteId, nuevoEstado, candidatoNombre){
   const v = VACANTES.find(x => x.id === +vacanteId);
   if(!v) return;
   let post = state.postulaciones.find(p => p.vacanteId === v.id);
-  if(!post){
-    post = { id: Date.now(), vacanteId: v.id, fecha: "Hoy", estado: nuevoEstado, pct: 82 };
-    state.postulaciones.unshift(post);
-  } else {
+  if(post){
     post.estado = nuevoEstado;
   }
 
   const textos = {
-    en_revision: `Su postulación a «${v.titulo}» en ${v.empresa} fue vista por el reclutador y está en revisión.`,
-    preseleccionada: `¡Felicitaciones! Su postulación a «${v.titulo}» en ${v.empresa} fue aceptada (preseleccionada).`,
-    descartada: `Su proceso en la vacante «${v.titulo}» en ${v.empresa} ha finalizado (postulación rechazada).`
+    en_revision: `Su postulación a «${v.titulo}» en ${v.empresa} fue vista y está en revisión.`,
+    preseleccionada: `¡Buenas noticias! Su postulación a «${v.titulo}» en ${v.empresa} fue aceptada (preseleccionada).`,
+    descartada: `Su postulación a «${v.titulo}» en ${v.empresa} fue rechazada (descartada).`
   };
-  if(!textos[nuevoEstado]) return;
+  if(!textos[nuevoEstado]){
+    toast("Estado de la postulación actualizado a Enviada.");
+    return;
+  }
 
   const ahora = new Date().toLocaleTimeString("es-CO", {hour:"2-digit", minute:"2-digit"});
   state.notificaciones.unshift({
@@ -2288,12 +2611,408 @@ function emitirNotificacionEstado(vacanteId, nuevoEstado){
     plataformaEnviado: state.canalesNotif.plataforma
   });
   badgeNotif();
-  const canalTxt = state.canalesNotif.plataforma && state.canalesNotif.correo
-    ? "Plataforma y Correo"
-    : state.canalesNotif.plataforma ? "Plataforma" : state.canalesNotif.correo ? "Correo" : "Silenciado";
-  toast(`Notificación enviada (${ESTADOS_META[nuevoEstado].nombre}) · Canal: ${canalTxt}`);
+  const quien = candidatoNombre ? ` para ${candidatoNombre}` : "";
+  toast(`Estado actualizado a «${ESTADOS_META[nuevoEstado].nombre}»${quien}. Notificación enviada.`);
 }
 
+/* ---- Vista 1 de Reclutador: Mis vacantes (lista.html + formulario.html) ---- */
+function pintarVacantesReclutador(){
+  const cont = $("#vacantes-rec-body");
+  if(!cont) return;
+  const u = state.user || {};
+  const empresaRec = u.empresa || "Magneto Empleos";
+
+  if(state.recEditandoVacante !== null){
+    const editVac = VACANTES.find(x => x.id === state.recEditandoVacante);
+    const reqs = editVac ? editVac.req : [["Trabajo en equipo", 0.50, 3], ["Puntualidad", 0.50, 3]];
+    cont.innerHTML = `
+      <div class="view-head">
+        <div>
+          <p class="eyebrow">Mis vacantes</p>
+          <h1>${editVac ? "Editar vacante" : "Nueva vacante"}</h1>
+          <p>Indique los datos de la vacante y las habilidades ponderadas (la suma de pesos debe ser 1.00 para publicar).</p>
+        </div>
+        <button class="btn btn-ghost" id="btn-cancel-vac">← Volver a mis vacantes</button>
+      </div>
+      <div class="card">
+        <h3>Datos de la vacante</h3>
+        <div class="grid-2" style="margin-top:14px">
+          <div class="field"><label>Título <span class="req">*</span></label>
+            <input class="input" id="vf-titulo" value="${editVac ? editVac.titulo : ''}" placeholder="Ej. Analista de datos"></div>
+          <div class="field"><label>Empresa <span class="req">*</span></label>
+            <input class="input" id="vf-empresa" value="${editVac ? editVac.empresa : empresaRec}"></div>
+        </div>
+        <div class="grid-3" style="margin-top:14px">
+          <div class="field"><label>Área ocupacional</label>
+            <select class="select" id="vf-sector">
+              ${Object.keys(SECTORES).map(s => `<option ${editVac && editVac.sector===s ? 'selected':''}>${s}</option>`).join("")}
+            </select></div>
+          <div class="field"><label>Cargo</label>
+            <input class="input" id="vf-rol" value="${editVac ? editVac.rol : ''}" placeholder="Ej. Analista"></div>
+          <div class="field"><label>Ciudad</label>
+            <input class="input" id="vf-ciudad" value="${editVac ? editVac.ciudad : 'Medellín'}"></div>
+        </div>
+        <div class="grid-3" style="margin-top:14px">
+          <div class="field"><label>Modalidad</label>
+            <select class="select" id="vf-mod">
+              ${["Presencial","Híbrido","Remoto"].map(m => `<option ${editVac && editVac.modalidad===m ? 'selected':''}>${m}</option>`).join("")}
+            </select></div>
+          <div class="field"><label>Tipo de contrato</label>
+            <select class="select" id="vf-jor">
+              ${["Tiempo completo","Medio tiempo","Por turnos","Temporal","Por horas"].map(j => `<option ${editVac && editVac.jornada===j ? 'selected':''}>${j}</option>`).join("")}
+            </select></div>
+          <div class="field"><label>Salario mensual</label>
+            <input class="input" type="number" id="vf-sal" value="${editVac ? editVac.salario : 2500000}"></div>
+        </div>
+        <div class="row between center wrap" style="margin-top:22px;padding-top:16px;border-top:1px solid var(--line)">
+          <span class="small muted">Las habilidades ponderadas quedan sincronizadas en el grafo.</span>
+          <div class="row wrap">
+            <button class="btn btn-ghost" id="btn-save-borrador">Guardar como borrador</button>
+            <button class="btn btn-accent" id="btn-save-publicar">Publicar vacante</button>
+          </div>
+        </div>
+      </div>`;
+
+    $("#btn-cancel-vac").addEventListener("click", () => {
+      state.recEditandoVacante = null;
+      pintarVacantesReclutador();
+    });
+    const guardarVac = (publicar) => {
+      const tit = $("#vf-titulo").value.trim();
+      if(!tit){
+        $("#vf-titulo").classList.add("is-invalid");
+        toast(MSG_OBLIG);
+        return;
+      }
+      if(editVac){
+        editVac.titulo = tit;
+        editVac.empresa = $("#vf-empresa").value.trim() || empresaRec;
+        editVac.sector = $("#vf-sector").value;
+        editVac.rol = $("#vf-rol").value.trim() || tit;
+        editVac.ciudad = $("#vf-ciudad").value.trim() || "Medellín";
+        editVac.modalidad = $("#vf-mod").value;
+        editVac.jornada = $("#vf-jor").value;
+        editVac.salario = +$("#vf-sal").value || 2000000;
+        editVac.publicada = publicar;
+      } else {
+        const nuevoId = Math.max(...VACANTES.map(v => v.id)) + 1;
+        const sigla = (($("#vf-empresa").value.trim() || empresaRec).split(" ").map(p => p[0]).join("").slice(0,2) || "ME").toUpperCase();
+        VACANTES.unshift({
+          id: nuevoId,
+          titulo: tit,
+          empresa: $("#vf-empresa").value.trim() || empresaRec,
+          sigla,
+          ciudad: $("#vf-ciudad").value.trim() || "Medellín",
+          modalidad: $("#vf-mod").value,
+          jornada: $("#vf-jor").value,
+          salario: +$("#vf-sal").value || 2000000,
+          dias: 0,
+          rol: $("#vf-rol").value.trim() || tit,
+          sector: $("#vf-sector").value,
+          centralidad: 0.75,
+          publicada: publicar,
+          req: reqs
+        });
+      }
+      state.recEditandoVacante = null;
+      pintarVacantesReclutador();
+      toast(publicar ? "Vacante publicada." : "Vacante guardada como borrador.");
+    };
+    $("#btn-save-borrador").addEventListener("click", () => guardarVac(false));
+    $("#btn-save-publicar").addEventListener("click", () => guardarVac(true));
+    return;
+  }
+
+  cont.innerHTML = `
+    <div class="view-head">
+      <div>
+        <p class="eyebrow">Reclutador</p>
+        <h1>Mis vacantes</h1>
+        <p>Cree, edite y publique las vacantes de ${empresaRec}. Haga clic en «Ver postulaciones» para revisar los candidatos priorizados y aceptar o rechazar sus postulaciones.</p>
+      </div>
+      <div class="row wrap">
+        <button class="btn btn-ghost" id="btn-ir-postulaciones-rec">Ver postulaciones recibidas (${totalPostulacionesReclutador()})</button>
+        <button class="btn btn-primary" id="btn-nueva-vacante">+ Nueva vacante</button>
+      </div>
+    </div>
+
+    <div class="card tabla-card">
+      <table class="tabla" id="tabla-vacantes">
+        <thead>
+          <tr><th>Vacante</th><th>Estado</th><th>Habilidades</th><th>Actualizada</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          ${VACANTES.map(v => {
+            const numPost = (state.postulantesPorVacante[v.id] || []).length;
+            const pub = v.publicada !== false;
+            return `
+              <tr data-vacante="${v.id}">
+                <td>
+                  <b>${v.titulo}</b>
+                  <p class="meta">${v.empresa} · ${v.ciudad} · ${v.jornada} · ${cop(v.salario)}</p>
+                </td>
+                <td><span class="tag ${pub ? 'tag-ok' : 'tag-neutro'}">${pub ? 'Publicada' : 'Borrador'}</span></td>
+                <td>${v.req.length}</td>
+                <td class="small muted">hace ${v.dias} d</td>
+                <td>
+                  <div class="acciones">
+                    <button class="btn ${numPost > 0 ? 'btn-primary' : 'btn-ghost'} btn-sm" type="button" data-ver-post="${v.id}">
+                      Ver postulaciones (${numPost})
+                    </button>
+                    <button class="btn btn-ghost btn-sm" type="button" data-edit-vac="${v.id}">Editar</button>
+                    <button class="btn ${pub ? 'btn-ghost' : 'btn-accent'} btn-sm" type="button" data-toggle-vac="${v.id}">
+                      ${pub ? 'Despublicar' : 'Publicar'}
+                    </button>
+                    <button class="btn btn-quiet btn-sm peligro" type="button" data-del-vac="${v.id}">Eliminar</button>
+                  </div>
+                </td>
+              </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  $("#btn-nueva-vacante").addEventListener("click", () => {
+    state.recEditandoVacante = 0;
+    pintarVacantesReclutador();
+  });
+  $("#btn-ir-postulaciones-rec").addEventListener("click", () => {
+    state.recVacanteSeleccionada = 128;
+    cambiarTab("reclutador");
+  });
+  $$("[data-ver-post]", cont).forEach(b => b.addEventListener("click", () => {
+    state.recVacanteSeleccionada = +b.dataset.verPost;
+    state.recSoloObligatorias = false;
+    cambiarTab("reclutador");
+  }));
+  $$("[data-edit-vac]", cont).forEach(b => b.addEventListener("click", () => {
+    state.recEditandoVacante = +b.dataset.editVac;
+    pintarVacantesReclutador();
+  }));
+  $$("[data-toggle-vac]", cont).forEach(b => b.addEventListener("click", () => {
+    const v = VACANTES.find(x => x.id === +b.dataset.toggleVac);
+    if(!v) return;
+    v.publicada = v.publicada === false ? true : false;
+    pintarVacantesReclutador();
+    toast(v.publicada ? "Vacante publicada." : "Vacante despublicada. Quedó como borrador.");
+  }));
+  $$("[data-del-vac]", cont).forEach(b => b.addEventListener("click", () => {
+    const idx = VACANTES.findIndex(x => x.id === +b.dataset.delVac);
+    if(idx !== -1){
+      VACANTES.splice(idx, 1);
+      pintarVacantesReclutador();
+      toast("Vacante eliminada.");
+    }
+  }));
+}
+
+/* ---- Vista 2 de Reclutador: Postulaciones de una vacante priorizadas por match (de_vacante.html) ---- */
+function pintarReclutador(){
+  const cont = $("#reclutador-body");
+  if(!cont) return;
+  const vacante = VACANTES.find(v => v.id === +state.recVacanteSeleccionada) || VACANTES.find(v => v.id === 128) || VACANTES[0];
+  state.recVacanteSeleccionada = vacante.id;
+
+  const postuladosRaw = state.postulantesPorVacante[vacante.id] || [];
+  const enriquecidos = postuladosRaw.map(cand => {
+    const m = calcularMatchCandidatoVacante(cand.skills, cand.aprender, vacante);
+    return { cand, m };
+  }).sort((a,b) => b.m.pct - a.m.pct);
+
+  const total = enriquecidos.length;
+  const cumplenLista = enriquecidos.filter(i => i.m.cumpleObligatorias);
+  const cumplen = cumplenLista.length;
+  const items = state.recSoloObligatorias ? cumplenLista : enriquecidos;
+
+  cont.innerHTML = `
+    <div class="view-head">
+      <div>
+        <p class="eyebrow">Mis vacantes · postulaciones</p>
+        <h1>${vacante.titulo}</h1>
+        <p>${total} postulaci${total === 1 ? 'ón' : 'ones'}, ordenada${total === 1 ? '' : 's'} de mayor a menor ajuste con lo que usted pidió en la vacante.</p>
+      </div>
+      <div class="row center wrap">
+        <label class="small muted" for="sel-rec-vacante">Vacante:</label>
+        <select class="select" id="sel-rec-vacante" style="width:auto">
+          ${VACANTES.map(v => {
+            const n = (state.postulantesPorVacante[v.id] || []).length;
+            return `<option value="${v.id}" ${v.id === vacante.id ? 'selected' : ''}>${v.titulo} (${n} postulados)</option>`;
+          }).join("")}
+        </select>
+        <button class="btn btn-ghost" id="btn-volver-mis-vacantes">← Volver a mis vacantes</button>
+      </div>
+    </div>
+
+    <div class="filters" id="filtro-obligatorias" style="margin-top:0">
+      <button type="button" class="chip" data-f-ob="todos" aria-pressed="${!state.recSoloObligatorias}">Todos (${total})</button>
+      <button type="button" class="chip" data-f-ob="obligatorias" aria-pressed="${state.recSoloObligatorias}">Cumplen todas las obligatorias (${cumplen})</button>
+    </div>
+
+    <div class="stack-16" id="postulantes" style="margin-top:18px">
+      ${items.length ? items.map(({cand, m}, idx) => {
+        const esAna = cand.candidatoKey === "ana";
+        const esPublico = esAna ? (state.visibilidadPerfil === "publico") : true;
+        const nombreMostrar = esPublico ? cand.nombre : "Candidata con perfil privado";
+        const col = m.pct >= 75 ? "var(--green)" : m.pct >= 50 ? "var(--sky)" : "var(--line-strong)";
+        const dash = Math.round(m.pct / 100 * 163);
+        const estMeta = ESTADOS_META[cand.estado] || ESTADOS_META.enviada;
+
+        return `
+          <article class="job" data-postulacion="${cand.id}" data-pct="${m.pct}" data-cumple="${m.cumpleObligatorias ? 'si' : 'no'}">
+            <div class="job-top">
+              <span class="logo-sq">${idx + 1}</span>
+              <div class="grow">
+                <div class="row center wrap" style="gap:8px">
+                  <h3>${nombreMostrar}</h3>
+                  <span class="tag ${estMeta.cls}">${estMeta.nombre}</span>
+                  <span class="tag ${esPublico ? 'tag-ok' : 'tag-miss'}">${esPublico ? 'Perfil Público' : 'Perfil Privado'}</span>
+                </div>
+
+                <div data-nivel="1">
+                  <p class="lbl" style="margin-top:10px">Habilidades que coinciden con la vacante</p>
+                  <div class="tags" data-lista="coincidencias">
+                    ${m.cubiertas.length ? m.cubiertas.map(c => `
+                      <span class="tag ${claseNivelTag(c)}">${c.nombre} · peso ${c.peso.toFixed(2)} · nivel ${c.nivel}/${c.nivel_min}${c.obligatoria ? ' · obligatoria' : ''}</span>
+                    `).join("") : `<span class="small muted">Ninguna habilidad coincide con las requeridas.</span>`}
+                  </div>
+
+                  ${m.obligatoriasFaltantes.length ? `
+                    <div class="alert alert-error" data-alerta-obligatorias style="margin-top:12px">
+                      <span>Le faltan habilidades obligatorias:
+                        ${m.obligatoriasFaltantes.map(f => `<b>${f.nombre}</b> (peso ${f.peso.toFixed(2)})`).join(", ")}.</span>
+                    </div>
+                  ` : ''}
+
+                  ${m.obligatoriasBajoNivel.length ? `
+                    <div class="alert alert-nivel" data-aviso-nivel style="margin-top:12px">
+                      <span>Tiene estas obligatorias, pero por debajo del nivel exigido:</span>
+                      ${m.obligatoriasBajoNivel.map(c => `<span class="tag ${claseNivelTag(c)}">${c.nombre} · nivel ${c.nivel} de ${c.nivel_min}</span>`).join("")}
+                    </div>
+                  ` : ''}
+
+                  ${m.cumpleObligatorias ? `
+                    <p class="small" data-cumple-todas style="margin-top:10px;color:#0A6B32;font-weight:600">Cumple todas las habilidades obligatorias.</p>
+                  ` : ''}
+                </div>
+              </div>
+              <div class="score">
+                <div class="ring">
+                  <svg width="66" height="66" aria-hidden="true"><circle cx="33" cy="33" r="26" fill="none" stroke="var(--line)" stroke-width="7"/>
+                    <circle cx="33" cy="33" r="26" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${dash} 163"/></svg>
+                  <b style="color:${col}">${m.pct}%</b>
+                </div>
+                <span class="tiny muted">de ajuste</span>
+              </div>
+            </div>
+
+            <div class="job-actions" style="flex-wrap:wrap;gap:10px">
+              <div class="row center wrap" style="gap:8px">
+                <label class="small muted" for="estado-${cand.id}">Estado</label>
+                <select class="select" id="estado-${cand.id}" style="width:auto">
+                  <option value="enviada" ${cand.estado === 'enviada' ? 'selected' : ''}>Enviada</option>
+                  <option value="en_revision" ${cand.estado === 'en_revision' ? 'selected' : ''}>En revisión (Vista)</option>
+                  <option value="preseleccionada" ${cand.estado === 'preseleccionada' ? 'selected' : ''}>Preseleccionada (Aceptada)</option>
+                  <option value="descartada" ${cand.estado === 'descartada' ? 'selected' : ''}>Descartada (Rechazada)</option>
+                </select>
+                <button class="btn btn-ghost btn-sm" type="button" data-guardar-est="${cand.id}">Guardar</button>
+              </div>
+              <div class="row center wrap" style="gap:6px">
+                <button class="btn btn-ghost btn-sm" type="button" data-quick-est="en_revision" data-cand="${cand.id}">Marcar vista</button>
+                <button class="btn btn-accent btn-sm" type="button" data-quick-est="preseleccionada" data-cand="${cand.id}">Aceptar postulación</button>
+                <button class="btn btn-quiet btn-sm peligro" type="button" data-quick-est="descartada" data-cand="${cand.id}">Rechazar</button>
+              </div>
+              <span class="grow"></span>
+              <span class="small muted">Se postuló el ${cand.fecha}</span>
+            </div>
+
+            <details class="porque" data-nivel="2">
+              <summary class="btn btn-ghost">Ver perfil completo</summary>
+              <div class="explain">
+                <div class="grid-2">
+                  <div>
+                    <p class="lbl">Datos personales</p>
+                    ${esPublico
+                      ? `<p class="small">${cand.correo} · ${cand.telefono} · ${cand.ciudad}</p>`
+                      : `<p class="small" style="color:var(--danger)">Este candidato configuró su perfil como privado. Sus datos de contacto están ocultos.</p>`}
+                  </div>
+                  <div>
+                    <p class="lbl">Hoja de vida original</p>
+                    ${!esPublico
+                      ? `<p class="small muted">Hoja de vida oculta por configuración de privacidad.</p>`
+                      : cand.cv
+                        ? `<button class="btn btn-ghost btn-sm" type="button" onclick="toast('Descargando ${cand.cv}...')">Descargar ${cand.cv}</button>`
+                        : `<p class="small muted">Llenó su perfil a mano; no subió archivo.</p>`}
+                  </div>
+                </div>
+                <div class="grid-2" style="margin-top:14px">
+                  <div><p class="lbl">Experiencia</p><p class="texto-largo">${esPublico ? (cand.experiencia || 'Sin experiencia registrada.') : 'Oculta en perfil privado.'}</p></div>
+                  <div><p class="lbl">Educación</p><p class="texto-largo">${esPublico ? (cand.educacion || 'Sin estudios registrados.') : 'Oculta en perfil privado.'}</p></div>
+                </div>
+                <p class="lbl" style="margin-top:14px">Todas sus habilidades</p>
+                <div class="tags">
+                  ${Object.entries(cand.skills).map(([nom, niv]) => `<span class="tag tag-neutro">${nom} · ${niv}</span>`).join("")}
+                </div>
+                <p class="lbl" style="margin-top:14px">Cómo se calculó el ${m.pct} %</p>
+                ${["Cobertura ponderada de habilidades|"+m.cobertura+"|"+PESOS.cobertura+"|",
+                   "Nivel declarado vs. nivel exigido|"+m.nivel+"|"+PESOS.nivel+"|",
+                   "Centralidad del rol en el grafo|"+m.centralidad+"|"+PESOS.centralidad+"|blue",
+                   "Afinidad con habilidades adyacentes|"+m.adyacencia+"|"+PESOS.adyacencia+"|navy"]
+                  .map(s => { const [n,val,pond,cls] = s.split("|"); return `
+                  <div class="comp"><span class="cn">${n}</span>
+                    <span class="bar"><i class="${cls}" style="width:${(+val*100).toFixed(0)}%"></i></span>
+                    <span class="cv">${(+val).toFixed(2)} × ${Math.round(+pond*100)} %</span></div>`; }).join("")}
+                <div class="mini-graph">${subgrafo(vacante, m)}</div>
+              </div>
+            </details>
+          </article>`;
+      }).join("") : `
+        <div class="empty">
+          <h3>${state.recSoloObligatorias && total ? 'Ningún candidato cumple todas las habilidades obligatorias' : 'Todavía no hay postulaciones en esta vacante'}</h3>
+          <p>${state.recSoloObligatorias && total ? `Quite el filtro para ver a los ${total} postulados.` : 'Seleccione otra vacante arriba (por ejemplo «Desarrollador Backend Senior» o «Auxiliar de bodega») para revisar sus postulados.'}</p>
+          ${state.recSoloObligatorias && total ? `<button class="btn btn-primary" type="button" id="btn-quitar-filtro-ob">Ver todos (${total})</button>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+
+  $("#sel-rec-vacante").addEventListener("change", e => {
+    state.recVacanteSeleccionada = +e.target.value;
+    state.recSoloObligatorias = false;
+    pintarReclutador();
+  });
+  $("#btn-volver-mis-vacantes").addEventListener("click", () => {
+    cambiarTab("vacantes-rec");
+  });
+  $$("#filtro-obligatorias .chip", cont).forEach(b => b.addEventListener("click", () => {
+    state.recSoloObligatorias = b.dataset.fOb === "obligatorias";
+    pintarReclutador();
+  }));
+  if($("#btn-quitar-filtro-ob")) $("#btn-quitar-filtro-ob").addEventListener("click", () => {
+    state.recSoloObligatorias = false;
+    pintarReclutador();
+  });
+  $$("[data-guardar-est]", cont).forEach(b => b.addEventListener("click", () => {
+    const candId = +b.dataset.guardarEst;
+    const cand = postuladosRaw.find(x => x.id === candId);
+    if(!cand) return;
+    const nuevo = $(`#estado-${candId}`, cont).value;
+    cand.estado = nuevo;
+    emitirNotificacionEstado(vacante.id, nuevo, cand.nombre);
+    pintarReclutador();
+  }));
+  $$("[data-quick-est]", cont).forEach(b => b.addEventListener("click", () => {
+    const candId = +b.dataset.cand;
+    const cand = postuladosRaw.find(x => x.id === candId);
+    if(!cand) return;
+    const nuevo = b.dataset.quickEst;
+    cand.estado = nuevo;
+    emitirNotificacionEstado(vacante.id, nuevo, cand.nombre);
+    pintarReclutador();
+  }));
+}
+
+/* ---- Vista de Postulaciones y Notificaciones del Candidato ---- */
 function pintarPostulaciones(){
   const cont = $("#postulaciones-body");
   if(!cont) return;
@@ -2382,77 +3101,7 @@ function pintarPostulaciones(){
   });
 }
 
-function pintarReclutador(){
-  const cont = $("#reclutador-body");
-  if(!cont) return;
-  const esPub = state.visibilidadPerfil === "publico";
-  const postActual = state.postulaciones[0] || { vacanteId: 128, estado: "en_revision", pct: 82 };
-  const vacante = VACANTES.find(v => v.id === postActual.vacanteId) || VACANTES[14];
-
-  cont.innerHTML = `
-    <div class="card">
-      <div class="row between center wrap">
-        <div>
-          <p class="eyebrow">Vacante activa #${vacante.id}</p>
-          <h3>${vacante.titulo} · ${vacante.empresa}</h3>
-          <p class="small muted">${vacante.ciudad} · ${vacante.modalidad} · ${vacante.jornada} · ${cop(vacante.salario)}</p>
-        </div>
-        <span class="tag tag-ok">Publicada · 2 postulados</span>
-      </div>
-
-      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
-        <div class="row between center wrap">
-          <h4>1. ${esPub ? 'Ana María Ríos Bedoya' : 'Candidata con Perfil Privado'} — Ajuste: 82%</h4>
-          <span class="tag ${esPub ? 'tag-ok' : 'tag-miss'}">Perfil ${esPub ? 'Público' : 'Privado'}</span>
-        </div>
-        ${esPub ? `
-          <p class="small" style="margin-top:8px"><b>Datos de contacto:</b> ana.rios@correo.com · 3001234567 · Medellín · <b>Hoja de vida:</b> hoja_de_vida_ana_rios.pdf</p>
-        ` : `
-          <p class="small" style="margin-top:8px;color:var(--danger)"><b>Datos personales protegidos:</b> La candidata configuró su perfil como privado. Su correo, teléfono y hoja de vida están ocultos.</p>
-        `}
-        <div class="tags" style="margin-top:10px">
-          <span class="tag tag-ok">Python · peso 0.30 · nivel 5/4 ✓</span>
-          <span class="tag tag-ok">Django · peso 0.25 · nivel 3/4 ✓</span>
-          <span class="tag tag-ok">Docker · peso 0.12 · nivel 3/2 ✓</span>
-          <span class="tag tag-ok">Scrum · peso 0.08 · nivel 3/2 ✓</span>
-          <span class="tag tag-miss">Neo4j / Cypher · falta</span>
-        </div>
-
-        <div class="row center wrap" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)">
-          <label class="small muted" for="rec-estado-select">Estado de la postulación:</label>
-          <select class="select" id="rec-estado-select" style="width:auto">
-            <option value="enviada" ${postActual.estado === 'enviada' ? 'selected' : ''}>Enviada</option>
-            <option value="en_revision" ${postActual.estado === 'en_revision' ? 'selected' : ''}>Vista (En revisión)</option>
-            <option value="preseleccionada" ${postActual.estado === 'preseleccionada' ? 'selected' : ''}>Aceptada (Preseleccionada)</option>
-            <option value="descartada" ${postActual.estado === 'descartada' ? 'selected' : ''}>Rechazada (Descartada)</option>
-          </select>
-          <button class="btn btn-primary" id="btn-rec-guardar" style="padding:9px 16px">Guardar estado y notificar</button>
-        </div>
-      </div>
-
-      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
-        <div class="row between center wrap">
-          <h4>2. Camilo Zapata Ospina — Ajuste: 18%</h4>
-          <span class="tag tag-ok">Perfil Público</span>
-        </div>
-        <p class="small" style="margin-top:8px"><b>Datos de contacto:</b> camilo.zapata@correo.com · 3109876543 · Medellín · <b>Hoja de vida:</b> hoja_de_vida_camilo_zapata.pdf</p>
-        <div class="tags" style="margin-top:10px">
-          <span class="tag tag-ok">Trabajo en equipo ✓</span>
-          <span class="tag tag-miss">Python · falta</span>
-          <span class="tag tag-miss">Django · falta</span>
-          <span class="tag tag-miss">Neo4j / Cypher · falta</span>
-        </div>
-      </div>
-    </div>
-  `;
-
-  $("#btn-rec-guardar").addEventListener("click", () => {
-    const nuevo = $("#rec-estado-select").value;
-    emitirNotificacionEstado(vacante.id, nuevo);
-    pintarReclutador();
-  });
-}
-
+/* ---- Vista de Disponibilidad del Sistema ---- */
 function pintarStatus(){
   const cont = $("#status-body");
   if(!cont) return;
@@ -2518,10 +3167,12 @@ function activarDemo(clave){
   state.docs = {...demo.docs};
   state.perfil = {...demo.perfil};
   state.query = ""; state.filtro = "todas"; state.orden = "match";
+  state.recEditandoVacante = null;
   if($("#q")) $("#q").value = "";
   if($("#results-title")) $("#results-title").textContent = "Recomendadas para usted";
   abrirApp();
   badgeNotif();
+  actualizarBadgeReclutador();
   toast(demo.aviso);
 }
 
