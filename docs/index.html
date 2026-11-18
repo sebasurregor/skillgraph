@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkillGraph AI — Plataforma de Empleo y Matching Explicable (Sprint 3)</title>
+<title>SkillGraph AI — Plataforma de Empleo y Matching Explicable</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -385,11 +385,13 @@ a{color:var(--navy-2)}
         <div class="field">
           <label for="i-email">Correo electrónico <span class="req">*</span></label>
           <input class="input" type="email" id="i-email" name="email" placeholder="nombre@correo.com" autocomplete="email">
-          <p class="hint">Cuentas: <b>ana.rios@correo.com</b> · <b>camilo.zapata@correo.com</b> · <b>reclutador@skillgraph.co</b> (clave: <b>skillgraph2026</b>)</p>
+          <p class="hint">Cuentas de prueba (contraseña <b>skillgraph2026</b>):<br>
+            Candidatos: <b>ana.rios@correo.com</b> · <b>camilo.zapata@correo.com</b><br>
+            Reclutadora: <b>reclutador@skillgraph.co</b></p>
           <div class="row wrap" style="margin-top:10px;gap:6px">
-            <button type="button" class="chip chip-soft tiny" id="quick-ana">⚡ Entrar como Candidata (Ana)</button>
-            <button type="button" class="chip chip-soft tiny" id="quick-camilo">⚡ Entrar como Candidato (Camilo)</button>
-            <button type="button" class="chip chip-soft tiny" id="quick-reclutador">⚡ Entrar como Reclutador (Laura)</button>
+            <button type="button" class="chip chip-soft tiny" id="quick-ana">Entrar como Ana (Candidata)</button>
+            <button type="button" class="chip chip-soft tiny" id="quick-camilo">Entrar como Camilo (Candidato)</button>
+            <button type="button" class="chip chip-soft tiny" id="quick-reclutador">Entrar como Laura (Reclutadora)</button>
           </div>
         </div>
         <button class="btn btn-primary btn-block" type="submit">Continuar</button>
@@ -712,30 +714,36 @@ a{color:var(--navy-2)}
         <path d="M12 7.4 6.6 15.8M12 7.4l5.4 8.4M7.4 18h9.2"/></svg>
     </div>
 
-    <button class="rail-btn active" data-tab="search" aria-label="Buscar empleo">
+    <button class="rail-btn active" data-tab="search" data-rol-nav="candidato" aria-label="Buscar empleo">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
       <span class="rail-tip">Buscar empleo</span>
     </button>
 
-    <button class="rail-btn" data-tab="saved" aria-label="Guardados">
+    <button class="rail-btn" data-tab="saved" data-rol-nav="candidato" aria-label="Guardados">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
         <path d="M12 20.5s-7.5-4.7-7.5-9.7a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8c0 5-7.5 9.7-7.5 9.7z"/></svg>
       <span class="badge hidden" id="saved-badge">0</span>
       <span class="rail-tip">Guardados</span>
     </button>
 
-    <button class="rail-btn" data-tab="postulaciones" aria-label="Mis postulaciones y notificaciones">
+    <button class="rail-btn" data-tab="postulaciones" data-rol-nav="candidato" aria-label="Mis postulaciones">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
       <span class="badge hidden" id="notif-badge">0</span>
-      <span class="rail-tip">Postulaciones y notificaciones</span>
+      <span class="rail-tip">Mis postulaciones</span>
     </button>
 
-    <button class="rail-btn" data-tab="reclutador" aria-label="Vista Reclutador">
+    <button class="rail-btn hidden" data-tab="reclutador" data-rol-nav="reclutador" aria-label="Mis vacantes y postulados">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
         <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg>
-      <span class="rail-tip">Vista Reclutador</span>
+      <span class="rail-tip">Mis vacantes</span>
+    </button>
+
+    <button class="rail-btn" data-tab="status" aria-label="Disponibilidad del sistema">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <span class="rail-tip">Disponibilidad del sistema</span>
     </button>
 
     <button class="rail-btn" data-tab="settings" aria-label="Ajustes">
@@ -789,40 +797,52 @@ a{color:var(--navy-2)}
       <div class="stack-16" id="jobs" style="margin-top:16px"></div>
     </div>
 
-    <!-- ---------- GUARDADOS (HU-RF-010) ---------- -->
+    <!-- ---------- GUARDADOS ---------- -->
     <div class="view hidden" id="tab-saved">
       <div class="view-head">
         <div>
-          <p class="eyebrow">Guardados · HU-RF-010</p>
+          <p class="eyebrow">Guardados</p>
           <h1>Vacantes que le gustaron</h1>
-          <p>Aquí puede revisar las vacantes marcadas como favoritas, postularse o eliminarlas de su lista de favoritos.</p>
+          <p>Aquí puede revisar las vacantes marcadas como favoritas, ver el detalle de su ajuste, postularse o retirarlas de su lista.</p>
         </div>
       </div>
       <div id="saved-list" class="stack-16"></div>
     </div>
 
-    <!-- ---------- POSTULACIONES Y NOTIFICACIONES (HU-RF-008) ---------- -->
+    <!-- ---------- MIS POSTULACIONES Y NOTIFICACIONES ---------- -->
     <div class="view hidden" id="tab-postulaciones">
       <div class="view-head">
         <div>
-          <p class="eyebrow">Mis postulaciones · HU-RF-008</p>
-          <h1>Estado de postulaciones y notificaciones</h1>
+          <p class="eyebrow">Mis postulaciones</p>
+          <h1>Estado de sus postulaciones</h1>
           <p>Consulte el avance de sus procesos de selección, configure sus canales de alerta y revise su histórico de notificaciones.</p>
         </div>
       </div>
       <div id="postulaciones-body"></div>
     </div>
 
-    <!-- ---------- RECLUTADOR (Vacantes, estados HU-RF-008 y visibilidad HU-RF-009) ---------- -->
+    <!-- ---------- VISTA EXCLUSIVA DE RECLUTADOR ---------- -->
     <div class="view hidden" id="tab-reclutador">
       <div class="view-head">
         <div>
-          <p class="eyebrow">Modo Reclutador · Magneto Empleos</p>
-          <h1>Gestión de vacantes y postulados priorizados</h1>
-          <p>Cambie el estado de las postulaciones (Vista, Aceptada, Rechazada) para emitir notificaciones y verifique la visibilidad pública/privada del perfil.</p>
+          <p class="eyebrow" id="rec-eyebrow">Reclutador · Magneto Empleos</p>
+          <h1>Mis vacantes y candidatos postulados</h1>
+          <p>Revise los candidatos ordenados por porcentaje de ajuste, verifique sus perfiles y actualice el estado de sus postulaciones.</p>
         </div>
       </div>
       <div id="reclutador-body"></div>
+    </div>
+
+    <!-- ---------- MONITOR DE DISPONIBILIDAD Y RENDIMIENTO (FUERA DE AJUSTES) ---------- -->
+    <div class="view hidden" id="tab-status">
+      <div class="view-head">
+        <div>
+          <p class="eyebrow">Estado de la plataforma</p>
+          <h1>Disponibilidad y rendimiento del sistema</h1>
+          <p>Monitoreo en tiempo real del nivel de servicio mensual y tiempos de respuesta bajo concurrencia.</p>
+        </div>
+      </div>
+      <div id="status-body"></div>
     </div>
 
     <!-- ---------- AJUSTES ---------- -->
@@ -838,8 +858,7 @@ a{color:var(--navy-2)}
         <button class="tab active" data-st="perfil">Perfil</button>
         <button class="tab" data-st="hv">Hoja de vida y habilidades</button>
         <button class="tab" data-st="app">Aplicación</button>
-        <button class="tab" data-st="priv">Privacidad y Visibilidad (HU-RF-009)</button>
-        <button class="tab" data-st="sla">Disponibilidad SLA (HU-RNF-003)</button>
+        <button class="tab" data-st="priv">Privacidad</button>
         <button class="tab" data-st="cuenta">Cuenta</button>
       </div>
       <div id="settings-body"></div>
@@ -857,9 +876,19 @@ a{color:var(--navy-2)}
 const MSG_OBLIG = "Favor ingresar información válida en los campos obligatorios.";
 
 const CUENTAS = {
-  "ana.rios@correo.com": { pw: "skillgraph2026", nombres: "Ana María", apellidos: "Ríos Bedoya", rol: "candidato" },
-  "camilo.zapata@correo.com": { pw: "skillgraph2026", nombres: "Camilo", apellidos: "Zapata Ospina", rol: "candidato" },
-  "reclutador@skillgraph.co": { pw: "skillgraph2026", nombres: "Laura", apellidos: "Gómez Restrepo", rol: "reclutador" }
+  "ana.rios@correo.com": {
+    pw: "skillgraph2026", nombres: "Ana María", apellidos: "Ríos Bedoya",
+    telefono: "3001234567", ciudad: "Medellín", rol: "candidato", demoKey: "d"
+  },
+  "camilo.zapata@correo.com": {
+    pw: "skillgraph2026", nombres: "Camilo", apellidos: "Zapata Ospina",
+    telefono: "3109876543", ciudad: "Medellín", rol: "candidato", demoKey: "n"
+  },
+  "reclutador@skillgraph.co": {
+    pw: "skillgraph2026", nombres: "Laura", apellidos: "Gómez Restrepo",
+    telefono: "3015550101", ciudad: "Medellín", empresa: "Magneto Empleos",
+    cargo: "Líder de Selección", rol: "reclutador", demoKey: "r"
+  }
 };
 
 const state = {
@@ -1226,9 +1255,14 @@ $("#form-pw").addEventListener("submit", e => {
     el.value = ""; el.focus(); return;
   }
   const c = CUENTAS[state.email];
-  state.user = { nombres:c.nombres, apellidos:c.apellidos, email:state.email,
-                 telefono:c.telefono || "", ciudad:c.ciudad || "" };
   limpiarAlerta("#pw-alert");
+  if(c.demoKey && DEMOS[c.demoKey]){
+    activarDemo(c.demoKey);
+    return;
+  }
+  state.user = { nombres:c.nombres, apellidos:c.apellidos, email:state.email,
+                 telefono:c.telefono || "", ciudad:c.ciudad || "", rol: c.rol || "candidato",
+                 empresa: c.empresa || "" };
   entrarOnboarding();
 });
 
@@ -1572,25 +1606,60 @@ function texto(v, m){
 /* =====================================================================
    7 · Interfaz de la aplicación
    ===================================================================== */
+const TODAS_TABS = ["search","saved","postulaciones","reclutador","status","settings"];
+
+function configurarVistaPorRol(){
+  const esReclutador = state.user && state.user.rol === "reclutador";
+  $$('[data-rol-nav="candidato"]').forEach(b => b.classList.toggle("hidden", esReclutador));
+  $$('[data-rol-nav="reclutador"]').forEach(b => b.classList.toggle("hidden", !esReclutador));
+
+  // En Ajustes, ocultar pestañas exclusivas de candidato cuando el usuario es reclutador
+  $$('#settings-tabs .tab').forEach(t => {
+    if(t.dataset.st === "hv" || t.dataset.st === "priv"){
+      t.classList.toggle("hidden", esReclutador);
+    }
+  });
+  if(esReclutador && (state.stab === "hv" || state.stab === "priv")){
+    state.stab = "perfil";
+  }
+}
+
+function cambiarTab(tabName){
+  const esReclutador = state.user && state.user.rol === "reclutador";
+  if(esReclutador && ["search","saved","postulaciones"].includes(tabName)){
+    tabName = "reclutador";
+  }
+  if(!esReclutador && tabName === "reclutador"){
+    tabName = "search";
+  }
+  state.tab = tabName;
+  $$(".rail-btn").forEach(x => x.classList.toggle("active", x.dataset.tab === tabName));
+  TODAS_TABS.forEach(t => {
+    const el = $("#tab-"+t);
+    if(el) el.classList.toggle("hidden", t !== tabName);
+  });
+  if(tabName === "search") pintarVacantes();
+  if(tabName === "saved") pintarGuardadas();
+  if(tabName === "postulaciones") pintarPostulaciones();
+  if(tabName === "reclutador") pintarReclutador();
+  if(tabName === "status") pintarStatus();
+  if(tabName === "settings") pintarAjustes();
+  if(window.scrollTo) try { window.scrollTo({top:0}); } catch(_){}
+}
+
 function abrirApp(){
   const u = state.user || {};
   $("#greet").textContent = "Hola, " + (u.nombres || "").split(" ")[0];
   $("#rail-avatar").textContent = ((u.nombres||"A")[0] + (u.apellidos||"R")[0]).toUpperCase();
+  $("#rail-avatar").title = [u.nombres, u.apellidos].filter(Boolean).join(" ") + " (" + (u.rol === "reclutador" ? "Reclutadora" : "Candidato") + ")";
+  configurarVistaPorRol();
   pintarFiltros(); pintarRecientes(); pintarVacantes(); pintarAjustes();
   ir("#s-app");
+  cambiarTab(u.rol === "reclutador" ? "reclutador" : "search");
 }
 
-const TODAS_TABS = ["search","saved","postulaciones","reclutador","settings"];
 $$(".rail-btn").forEach(b => b.addEventListener("click", () => {
-  $$(".rail-btn").forEach(x => x.classList.remove("active"));
-  b.classList.add("active");
-  state.tab = b.dataset.tab;
-  TODAS_TABS.forEach(t => { const el = $("#tab-"+t); if(el) el.classList.toggle("hidden", t !== state.tab); });
-  if(state.tab === "saved") pintarGuardadas();
-  if(state.tab === "postulaciones") pintarPostulaciones();
-  if(state.tab === "reclutador") pintarReclutador();
-  if(state.tab === "settings") pintarAjustes();
-  window.scrollTo({top:0});
+  cambiarTab(b.dataset.tab);
 }));
 
 const FILTROS = ["todas","Presencial","Remoto","Temporal","Medio tiempo","Por turnos","Sin brechas"];
@@ -1631,11 +1700,8 @@ $("#clear-recents").addEventListener("click", () => {
   state.recientes = []; pintarRecientes(); toast("Historial de búsquedas borrado.");
 });
 $("#btn-edit-skills").addEventListener("click", () => {
-  $$(".rail-btn").forEach(x => x.classList.remove("active"));
-  $('[data-tab="settings"]').classList.add("active");
-  state.tab = "settings"; state.stab = "hv";
-  TODAS_TABS.forEach(t => { const el = $("#tab-"+t); if(el) el.classList.toggle("hidden", t !== "settings"); });
-  pintarAjustes();
+  state.stab = "hv";
+  cambiarTab("settings");
 });
 
 function filtrar(){
@@ -1759,7 +1825,9 @@ function enlazarTarjetas(cont){
   $$("[data-why]", cont).forEach(b => {
     b.dataset.label = b.textContent.trim();
     b.addEventListener("click", () => {
-      const ex = $("#ex-"+b.dataset.why);
+      const card = b.closest(".job") || cont;
+      const ex = $("#ex-"+b.dataset.why, card);
+      if(!ex) return;
       const abierto = !ex.classList.contains("hidden");
       ex.classList.toggle("hidden");
       b.textContent = abierto ? b.dataset.label : "Ocultar el cálculo";
@@ -1776,6 +1844,7 @@ function enlazarTarjetas(cont){
     badge();
     toast(g ? "Vacante guardada en sus favoritos." : "Vacante retirada de sus favoritos.");
     if(state.tab === "saved") pintarGuardadas();
+    pintarVacantes();
   }));
   $$("[data-del-fav]", cont).forEach(b => b.addEventListener("click", () => {
     const id = +b.dataset.delFav;
@@ -1841,21 +1910,27 @@ function pintarAjustes(){
   const p = state.perfil, u = state.user || {};
 
   if(state.stab === "perfil"){
+    const esRec = u.rol === "reclutador";
     c.innerHTML = `
       <div class="card">
-        <h3>Información personal</h3>
-        <p class="small muted">Los cambios se reflejan de inmediato en las postulaciones que envíe.</p>
+        <h3>${esRec ? "Información de la cuenta reclutadora" : "Información personal"}</h3>
+        <p class="small muted">${esRec
+          ? "Datos corporativos asociados a las vacantes que publica en la plataforma."
+          : "Los cambios se reflejan de inmediato en las postulaciones que envíe."}</p>
         <div class="grid-2" style="margin-top:18px">
-          ${campo("Nombre completo", p.nombre || [u.nombres,u.apellidos].join(" "))}
-          ${campo("Documento", (p.tipodoc||"Cédula de ciudadanía") + " " + (p.documento||""))}
+          ${campo("Nombre completo", p.nombre || [u.nombres,u.apellidos].filter(Boolean).join(" "))}
+          ${esRec
+            ? campo("Empresa", u.empresa || p.empresa || "Magneto Empleos")
+            : campo("Documento", (p.tipodoc||"Cédula de ciudadanía") + " " + (p.documento||""))}
           ${campo("Teléfono", p.tel || u.telefono || "")}
           ${campo("Correo electrónico", p.mail || u.email || "")}
-          ${campo("Dirección", p.dir || "")}
-          ${campo("Ciudad", p.ciudad || "")}
+          ${esRec
+            ? campo("Cargo", u.cargo || p.cargo || "Líder de Selección")
+            : campo("Dirección", p.dir || "")}
+          ${campo("Ciudad", p.ciudad || u.ciudad || "")}
         </div>
         <div class="row" style="margin-top:20px">
           <button class="btn btn-primary" onclick="toast('Cambios guardados en su perfil.')">Guardar cambios</button>
-          <button class="btn btn-ghost" onclick="toast('Se envió un enlace de verificación a su correo.')">Verificar identidad</button>
         </div>
       </div>`;
   }
@@ -1990,17 +2065,15 @@ function pintarAjustes(){
 
   if(state.stab === "priv"){
     const esPub = state.visibilidadPerfil === "publico";
-    const u = state.user || {};
-    const nombreReal = state.perfil.nombre || [u.nombres, u.apellidos].filter(Boolean).join(" ") || "Ana María Ríos Bedoya";
-    const correoReal = state.perfil.mail || u.email || "ana.rios@correo.com";
-    const telReal = state.perfil.tel || u.telefono || "3001234567";
-    const cvReal = state.docs.cv ? state.docs.cv.nombre : "hoja_de_vida_ana_rios.pdf";
+    const nombreReal = p.nombre || [u.nombres, u.apellidos].filter(Boolean).join(" ") || "Candidato";
+    const correoReal = p.mail || u.email || "";
+    const telReal = p.tel || u.telefono || "";
+    const cvReal = state.docs.cv ? state.docs.cv.nombre : "hoja_de_vida.pdf";
     c.innerHTML = `
       <div class="card">
         <div class="row between center wrap">
           <div>
-            <p class="eyebrow">HU-RF-009 · Configurar Visibilidad de Perfil</p>
-            <h3 style="margin-top:4px">Visibilidad de su perfil profesional</h3>
+            <h3>Visibilidad de su perfil profesional</h3>
             <p class="small muted">Decida en cualquier momento quién puede visualizar su información personal y su hoja de vida.</p>
           </div>
           <span class="tag ${esPub ? 'tag-ok' : 'tag-miss'}" style="font-size:13px;padding:7px 14px">
@@ -2010,9 +2083,9 @@ function pintarAjustes(){
 
         <div class="setting" style="margin-top:12px">
           <div>
-            <b style="font-size:14.5px">Estado de visibilidad del perfil</b>
+            <b style="font-size:14.5px">Configuración de visibilidad</b>
             <p class="small muted">${esPub
-              ? 'Público: las empresas reclutadoras pueden ver sus datos de contacto y descargar su hoja de vida.'
+              ? 'Público: las empresas reclutadoras pueden visualizar sus datos de contacto y su hoja de vida.'
               : 'Privado: se ocultan sus datos personales (correo, teléfono, documento) y su hoja de vida para terceros.'}</p>
           </div>
           <div class="row center">
@@ -2020,27 +2093,27 @@ function pintarAjustes(){
               <option value="publico" ${esPub ? 'selected' : ''}>Público</option>
               <option value="privado" ${!esPub ? 'selected' : ''}>Privado</option>
             </select>
-            <button class="btn btn-primary" id="btn-guardar-visibilidad" style="padding:10px 16px">Cambiar visibilidad</button>
+            <button class="btn btn-primary" id="btn-guardar-visibilidad" style="padding:10px 16px">Guardar visibilidad</button>
           </div>
         </div>
       </div>
 
       <div class="card" style="margin-top:16px">
-        <h3>Vista previa para reclutadores y terceros (${esPub ? 'Datos visibles' : 'Datos personales ocultos'})</h3>
-        <p class="small muted">Así ven las empresas su perfil actualmente según la configuración elegida:</p>
+        <h3>Vista previa de su perfil para empresas (${esPub ? 'Datos visibles' : 'Datos personales ocultos'})</h3>
+        <p class="small muted">Así ven los reclutadores su perfil según la configuración elegida:</p>
         ${esPub ? `
           <div style="margin-top:14px;padding:16px;border:1.5px solid var(--green);background:var(--green-soft);border-radius:12px">
-            <p><b style="font-size:15px">${nombreReal}</b> <span class="tag tag-ok">Perfil Público</span></p>
+            <p><b style="font-size:15px">${nombreReal}</b> <span class="tag tag-ok">Público</span></p>
             <p class="small" style="margin-top:6px"><b>Correo:</b> ${correoReal} · <b>Teléfono:</b> ${telReal} · <b>Ciudad:</b> ${u.ciudad || 'Medellín'}</p>
-            <p class="small" style="margin-top:4px"><b>Hoja de vida disponible:</b> ${cvReal}</p>
+            <p class="small" style="margin-top:4px"><b>Hoja de vida:</b> ${cvReal}</p>
             <div class="tags" style="margin-top:10px">
               ${Object.entries(state.skills).map(([s,n]) => `<span class="tag tag-ok">${s} · nivel ${n}</span>`).join("")}
             </div>
           </div>
         ` : `
           <div style="margin-top:14px;padding:16px;border:1.5px solid var(--danger);background:var(--danger-soft);border-radius:12px">
-            <p><b style="font-size:15px">Candidato con perfil privado</b> <span class="tag tag-miss">Perfil Privado</span></p>
-            <p class="small muted" style="margin-top:6px">🔒 Correo electrónico, teléfono, documento de identidad y hoja de vida están ocultos por configuración del usuario.</p>
+            <p><b style="font-size:15px">Candidato con perfil privado</b> <span class="tag tag-miss">Privado</span></p>
+            <p class="small muted" style="margin-top:6px">Correo electrónico, teléfono, documento de identidad y hoja de vida ocultos.</p>
             <div class="tags" style="margin-top:10px">
               ${Object.entries(state.skills).map(([s,n]) => `<span class="tag" style="background:var(--surface)">${s} · nivel ${n}</span>`).join("")}
             </div>
@@ -2049,10 +2122,11 @@ function pintarAjustes(){
       </div>
 
       <div class="card" style="margin-top:16px">
-        <h3>Derechos sobre sus datos (Ley 1581 de 2012)</h3>
-        <div class="row wrap" style="margin-top:14px">
-          <button class="btn btn-ghost" onclick="toast('Generando el archivo JSON con todos sus datos.')">Descargar copia de mis datos</button>
-          <button class="btn btn-ghost" onclick="toast('Solicitud de eliminación registrada (plazo máximo 30 días).')" style="color:var(--danger);border-color:var(--danger)">Solicitar eliminación de cuenta</button>
+        <h3>Sus datos (Ley 1581 de 2012)</h3>
+        <p class="small muted">Tratamos su información conforme a la ley de protección de datos personales.</p>
+        <div class="row wrap" style="margin-top:16px">
+          <button class="btn btn-ghost" onclick="toast('Generando el archivo con todos sus datos.')">Descargar mis datos</button>
+          <button class="btn btn-ghost" onclick="toast('Se abriría la confirmación de eliminación de cuenta.')" style="color:var(--danger);border-color:var(--danger)">Eliminar mi cuenta</button>
         </div>
       </div>`;
 
@@ -2060,60 +2134,6 @@ function pintarAjustes(){
       state.visibilidadPerfil = $("#sel-visibilidad").value;
       pintarAjustes();
       toast("Visibilidad actualizada: su perfil ahora es " + (state.visibilidadPerfil === "publico" ? "Público." : "Privado."));
-    });
-  }
-
-  if(state.stab === "sla"){
-    const s = state.slaMetricas;
-    c.innerHTML = `
-      <div class="card">
-        <div class="row between center wrap">
-          <div>
-            <p class="eyebrow">HU-RNF-003 · Disponibilidad del Sistema</p>
-            <h3 style="margin-top:4px">Monitor de Disponibilidad y Rendimiento (SLA)</h3>
-            <p class="small muted">Verificación en tiempo real de los criterios de aceptación de disponibilidad y concurrencia.</p>
-          </div>
-          <span class="tag ${s.cumpleSla ? 'tag-ok' : 'tag-miss'}" style="font-size:13px;padding:7px 14px">
-            ${s.cumpleSla ? '✓ Cumple SLA 99%' : '✗ Incumple SLA'}
-          </span>
-        </div>
-
-        <div class="grid-3" style="margin-top:18px">
-          <div style="padding:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2)">
-            <p class="tiny muted">Disponibilidad mensual (meta ≥ 99%)</p>
-            <p style="font-size:26px;font-weight:700;color:var(--green);margin-top:4px">${s.disponibilidadMensual}%</p>
-            <p class="tiny muted" style="margin-top:4px">Inactividad: ${s.horasInactividadMes} h / máx ${s.maxHorasPermitidas} h al mes</p>
-          </div>
-          <div style="padding:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2)">
-            <p class="tiny muted">Tiempo promedio (${s.usuariosConcurrentes} usuarios)</p>
-            <p style="font-size:26px;font-weight:700;color:var(--navy);margin-top:4px">${s.tiempoPromedioS} s</p>
-            <p class="tiny muted" style="margin-top:4px">Umbral máximo exigido: &lt; 3.00 s</p>
-          </div>
-          <div style="padding:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2)">
-            <p class="tiny muted">Solicitudes dentro del umbral (&lt; 3s)</p>
-            <p style="font-size:26px;font-weight:700;color:var(--green);margin-top:4px">${s.pctDentroUmbral}%</p>
-            <p class="tiny muted" style="margin-top:4px">Percentil 95 (P95): ${s.p95S} s (meta ≥ 95%)</p>
-          </div>
-        </div>
-
-        <div class="row center wrap" style="margin-top:20px">
-          <button class="btn btn-primary" id="btn-simular-carga">Ejecutar prueba con 100 usuarios concurrentes</button>
-          <span class="small muted">Simula 100 peticiones simultáneas y recalcula promedio, P95 y cumplimiento de SLA.</span>
-        </div>
-      </div>`;
-
-    $("#btn-simular-carga").addEventListener("click", () => {
-      const tiempos = Array.from({length: 100}, () => +(0.18 + Math.random() * 0.65).toFixed(3));
-      const prom = +(tiempos.reduce((a,b) => a+b, 0) / 100).toFixed(3);
-      const ord = [...tiempos].sort((a,b) => a-b);
-      const p95 = ord[94];
-      const dentro = tiempos.filter(t => t <= 3.0).length;
-      state.slaMetricas.tiempoPromedioS = prom;
-      state.slaMetricas.p95S = p95;
-      state.slaMetricas.pctDentroUmbral = dentro;
-      state.slaMetricas.cumpleSla = prom < 3.0 && dentro >= 95 && state.slaMetricas.disponibilidadMensual >= 99.0;
-      pintarAjustes();
-      toast("Prueba completada: 100 usuarios concurrentes · promedio " + prom + " s (< 3 s) · 100% dentro del umbral.");
     });
   }
 
@@ -2162,7 +2182,7 @@ function alternar(b){
 const DEMOS = {
   d: {
     user:{ nombres:"Ana María", apellidos:"Ríos Bedoya", email:"ana.rios@correo.com",
-           telefono:"3001234567", ciudad:"Medellín" },
+           telefono:"3001234567", ciudad:"Medellín", rol:"candidato" },
     skills:{ "Python":5, "Django":3, "SQL":4, "Docker":3, "Git":5, "Scrum":3, "Linux":4 },
     respuestas:{ sector:["Tecnología e informática"], experiencia:"Entre 3 y 6 años",
       aprender:["Neo4j / Cypher","AWS"], jornada:["Tiempo completo"], modalidad:"Híbrido",
@@ -2175,7 +2195,7 @@ const DEMOS = {
   },
   n: {
     user:{ nombres:"Camilo", apellidos:"Zapata Ospina", email:"camilo.zapata@correo.com",
-           telefono:"3109876543", ciudad:"Medellín" },
+           telefono:"3109876543", ciudad:"Medellín", rol:"candidato" },
     skills:{ "Trabajo en equipo":4, "Puntualidad":5, "Atención al cliente":3,
              "Carga y descarga":3, "Alistamiento de pedidos":2 },
     respuestas:{ sector:["Logística y bodega","Ventas y comercio"], experiencia:"Menos de 1 año",
@@ -2186,7 +2206,18 @@ const DEMOS = {
     docs:{ cv:{ nombre:"hoja_de_vida_camilo_zapata.pdf", kb:186 } },
     perfil:{ nombre:"Camilo Zapata Ospina", documento:"1035784412", tipodoc:"Cédula de ciudadanía",
       tel:"3109876543", mail:"camilo.zapata@correo.com", dir:"Calle 78 # 45-12", ciudad:"Medellín, Antioquia" },
-    aviso:"Modo demostración: perfil de Camilo, busca temporal de fin de año."
+    aviso:"Sesión iniciada como Camilo Zapata (Candidato)."
+  },
+  r: {
+    user:{ nombres:"Laura", apellidos:"Gómez Restrepo", email:"reclutador@skillgraph.co",
+           telefono:"3015550101", ciudad:"Medellín", empresa:"Magneto Empleos",
+           cargo:"Líder de Selección", rol:"reclutador" },
+    skills:{},
+    respuestas:{},
+    docs:{},
+    perfil:{ nombre:"Laura Gómez Restrepo", empresa:"Magneto Empleos", cargo:"Líder de Selección",
+      tel:"3015550101", mail:"reclutador@skillgraph.co", ciudad:"Medellín, Antioquia" },
+    aviso:"Sesión iniciada como Laura Gómez Restrepo (Reclutadora · Magneto Empleos)."
   }
 };
 
@@ -2210,7 +2241,7 @@ addEventListener("keydown", e => {
 });
 
 /* =====================================================================
-   9 · Postulaciones y Notificaciones (HU-RF-008) + Vista Reclutador
+   9 · Postulaciones, Notificaciones, Reclutador y Disponibilidad
    ===================================================================== */
 const ESTADOS_META = {
   enviada: { nombre: "Enviada", cls: "chip-soft" },
@@ -2232,7 +2263,7 @@ function emitirNotificacionEstado(vacanteId, nuevoEstado){
   if(!v) return;
   let post = state.postulaciones.find(p => p.vacanteId === v.id);
   if(!post){
-    post = { id: Date.now(), vacanteId: v.id, fecha: "Hoy", estado: nuevoEstado, pct: calcular(v).pct };
+    post = { id: Date.now(), vacanteId: v.id, fecha: "Hoy", estado: nuevoEstado, pct: 82 };
     state.postulaciones.unshift(post);
   } else {
     post.estado = nuevoEstado;
@@ -2260,20 +2291,21 @@ function emitirNotificacionEstado(vacanteId, nuevoEstado){
   const canalTxt = state.canalesNotif.plataforma && state.canalesNotif.correo
     ? "Plataforma y Correo"
     : state.canalesNotif.plataforma ? "Plataforma" : state.canalesNotif.correo ? "Correo" : "Silenciado";
-  toast(`Notificación emitida (${ESTADOS_META[nuevoEstado].nombre}) · Canal: ${canalTxt}`);
+  toast(`Notificación enviada (${ESTADOS_META[nuevoEstado].nombre}) · Canal: ${canalTxt}`);
 }
 
 function pintarPostulaciones(){
   const cont = $("#postulaciones-body");
   if(!cont) return;
   const notifsVisibles = state.notificaciones.filter(n => n.plataformaEnviado);
+  const correoUsuario = (state.user && state.user.email) || "ana.rios@correo.com";
 
   cont.innerHTML = `
     <div class="card">
       <div class="row between center wrap">
         <div>
-          <h3>Mis postulaciones enviadas (${state.postulaciones.length})</h3>
-          <p class="small muted">Pruebe cambiar el estado con los botones de demostración para verificar el envío de notificaciones (HU-RF-008).</p>
+          <h3>Postulaciones enviadas (${state.postulaciones.length})</h3>
+          <p class="small muted">Aquí ve cada vacante a la que se postuló y el progreso de su proceso de selección.</p>
         </div>
       </div>
       ${state.postulaciones.length ? `
@@ -2289,31 +2321,28 @@ function pintarPostulaciones(){
                 </div>
                 <div class="row center wrap">
                   <span class="tag ${meta.cls}">${meta.nombre}</span>
-                  <button class="chip tiny" data-sim-est="en_revision" data-sim-vac="${v.id}">Simular: Vista</button>
-                  <button class="chip tiny" data-sim-est="preseleccionada" data-sim-vac="${v.id}">Simular: Aceptada</button>
-                  <button class="chip tiny" data-sim-est="descartada" data-sim-vac="${v.id}">Simular: Rechazada</button>
                 </div>
               </div>`;
           }).join("")}
         </div>
-      ` : `<p class="small muted" style="margin-top:12px">Aún no se ha postulado a ninguna vacante. Use «Postularme» en Buscar empleo.</p>`}
+      ` : `<p class="small muted" style="margin-top:12px">Todavía no se ha postulado a ninguna vacante. Use el botón «Postularme» en Buscar empleo.</p>`}
     </div>
 
     <div class="grid-2" style="margin-top:16px">
       <div class="card">
-        <h3>Canales de notificación (HU-RF-008)</h3>
-        <p class="small muted">Configure por qué medio desea recibir alertas cuando su postulación sea vista, aceptada o rechazada.</p>
+        <h3>Canales de notificación</h3>
+        <p class="small muted">Elija cómo quiere recibir notificaciones cuando su postulación sea vista, aceptada o rechazada.</p>
         <div class="setting" style="margin-top:10px">
           <div>
             <b style="font-size:14.5px">Notificaciones en la plataforma</b>
-            <p class="small muted">Muestra los avisos en el histórico de SkillGraph AI.</p>
+            <p class="small muted">Muestra las alertas dentro de su histórico en SkillGraph AI.</p>
           </div>
           <button class="switch" id="sw-canal-plat" role="switch" aria-checked="${state.canalesNotif.plataforma}"></button>
         </div>
         <div class="setting">
           <div>
             <b style="font-size:14.5px">Notificaciones por correo electrónico</b>
-            <p class="small muted">Envía copia al correo ${(state.user && state.user.email) || 'ana.rios@correo.com'}.</p>
+            <p class="small muted">Envía un correo a ${correoUsuario} en cada cambio de estado.</p>
           </div>
           <button class="switch" id="sw-canal-mail" role="switch" aria-checked="${state.canalesNotif.correo}"></button>
         </div>
@@ -2321,7 +2350,7 @@ function pintarPostulaciones(){
 
       <div class="card">
         <h3>Histórico de notificaciones (${notifsVisibles.length})</h3>
-        <p class="small muted">Registro cronológico accesible en cualquier momento para seguimiento de sus procesos.</p>
+        <p class="small muted">Registro cronológico de actualizaciones sobre sus postulaciones.</p>
         ${notifsVisibles.length ? `
           <div class="stack-8" style="margin-top:12px;max-height:320px;overflow-y:auto">
             ${notifsVisibles.map(n => `
@@ -2335,7 +2364,7 @@ function pintarPostulaciones(){
               </div>
             `).join("")}
           </div>
-        ` : `<p class="small muted" style="margin-top:14px">No hay notificaciones visibles en plataforma.</p>`}
+        ` : `<p class="small muted" style="margin-top:14px">No hay notificaciones visibles en la plataforma.</p>`}
       </div>
     </div>
   `;
@@ -2351,17 +2380,12 @@ function pintarPostulaciones(){
     pintarPostulaciones();
     toast("Canal de correo electrónico " + (state.canalesNotif.correo ? "activado." : "desactivado."));
   });
-  $$("[data-sim-est]", cont).forEach(b => b.addEventListener("click", () => {
-    emitirNotificacionEstado(+b.dataset.simVac, b.dataset.simEst);
-    pintarPostulaciones();
-  }));
 }
 
 function pintarReclutador(){
   const cont = $("#reclutador-body");
   if(!cont) return;
   const esPub = state.visibilidadPerfil === "publico";
-  const u = state.user || {};
   const postActual = state.postulaciones[0] || { vacanteId: 128, estado: "en_revision", pct: 82 };
   const vacante = VACANTES.find(v => v.id === postActual.vacanteId) || VACANTES[14];
 
@@ -2369,7 +2393,7 @@ function pintarReclutador(){
     <div class="card">
       <div class="row between center wrap">
         <div>
-          <p class="eyebrow">Vacante publicada #${vacante.id}</p>
+          <p class="eyebrow">Vacante activa #${vacante.id}</p>
           <h3>${vacante.titulo} · ${vacante.empresa}</h3>
           <p class="small muted">${vacante.ciudad} · ${vacante.modalidad} · ${vacante.jornada} · ${cop(vacante.salario)}</p>
         </div>
@@ -2377,15 +2401,14 @@ function pintarReclutador(){
       </div>
 
       <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
-        <h4>1. ${esPub ? 'Ana María Ríos Bedoya' : 'Candidata con Perfil Privado'} — Ajuste: 82%</h4>
-        <p class="small muted" style="margin-top:4px">
-          Visibilidad configurada por la candidata (HU-RF-009):
-          <span class="tag ${esPub ? 'tag-ok' : 'tag-miss'}">${esPub ? 'Público' : 'Privado'}</span>
-        </p>
+        <div class="row between center wrap">
+          <h4>1. ${esPub ? 'Ana María Ríos Bedoya' : 'Candidata con Perfil Privado'} — Ajuste: 82%</h4>
+          <span class="tag ${esPub ? 'tag-ok' : 'tag-miss'}">Perfil ${esPub ? 'Público' : 'Privado'}</span>
+        </div>
         ${esPub ? `
-          <p class="small" style="margin-top:8px"><b>Datos de contacto:</b> ana.rios@correo.com · 3001234567 · Medellín · <b>CV:</b> hoja_de_vida_ana_rios.pdf</p>
+          <p class="small" style="margin-top:8px"><b>Datos de contacto:</b> ana.rios@correo.com · 3001234567 · Medellín · <b>Hoja de vida:</b> hoja_de_vida_ana_rios.pdf</p>
         ` : `
-          <p class="small" style="margin-top:8px;color:var(--danger)">🔒 <b>Datos ocultos:</b> La candidata configuró su perfil como Privado. Su correo, teléfono y hoja de vida están ocultos.</p>
+          <p class="small" style="margin-top:8px;color:var(--danger)"><b>Datos personales protegidos:</b> La candidata configuró su perfil como privado. Su correo, teléfono y hoja de vida están ocultos.</p>
         `}
         <div class="tags" style="margin-top:10px">
           <span class="tag tag-ok">Python · peso 0.30 · nivel 5/4 ✓</span>
@@ -2396,14 +2419,28 @@ function pintarReclutador(){
         </div>
 
         <div class="row center wrap" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)">
-          <label class="small muted" for="rec-estado-select">Cambiar estado de la postulación (HU-RF-008):</label>
+          <label class="small muted" for="rec-estado-select">Estado de la postulación:</label>
           <select class="select" id="rec-estado-select" style="width:auto">
             <option value="enviada" ${postActual.estado === 'enviada' ? 'selected' : ''}>Enviada</option>
             <option value="en_revision" ${postActual.estado === 'en_revision' ? 'selected' : ''}>Vista (En revisión)</option>
             <option value="preseleccionada" ${postActual.estado === 'preseleccionada' ? 'selected' : ''}>Aceptada (Preseleccionada)</option>
             <option value="descartada" ${postActual.estado === 'descartada' ? 'selected' : ''}>Rechazada (Descartada)</option>
           </select>
-          <button class="btn btn-primary" id="btn-rec-guardar" style="padding:9px 16px">Guardar y notificar al candidato</button>
+          <button class="btn btn-primary" id="btn-rec-guardar" style="padding:9px 16px">Guardar estado y notificar</button>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
+        <div class="row between center wrap">
+          <h4>2. Camilo Zapata Ospina — Ajuste: 18%</h4>
+          <span class="tag tag-ok">Perfil Público</span>
+        </div>
+        <p class="small" style="margin-top:8px"><b>Datos de contacto:</b> camilo.zapata@correo.com · 3109876543 · Medellín · <b>Hoja de vida:</b> hoja_de_vida_camilo_zapata.pdf</p>
+        <div class="tags" style="margin-top:10px">
+          <span class="tag tag-ok">Trabajo en equipo ✓</span>
+          <span class="tag tag-miss">Python · falta</span>
+          <span class="tag tag-miss">Django · falta</span>
+          <span class="tag tag-miss">Neo4j / Cypher · falta</span>
         </div>
       </div>
     </div>
@@ -2416,30 +2453,81 @@ function pintarReclutador(){
   });
 }
 
-function activarDemo(clave, irTab){
+function pintarStatus(){
+  const cont = $("#status-body");
+  if(!cont) return;
+  const s = state.slaMetricas;
+  cont.innerHTML = `
+    <div class="card">
+      <div class="row between center wrap">
+        <div>
+          <h3>Estado operativo y métricas de disponibilidad</h3>
+          <p class="small muted">Seguimiento continuo de disponibilidad mensual y tiempos de respuesta bajo carga concurrente.</p>
+        </div>
+        <span class="tag ${s.cumpleSla ? 'tag-ok' : 'tag-miss'}" style="font-size:13px;padding:7px 14px">
+          ${s.cumpleSla ? '✓ Sistema disponible · SLA ≥ 99%' : '✗ Degradación detectada'}
+        </span>
+      </div>
+
+      <div class="grid-3" style="margin-top:18px">
+        <div style="padding:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2)">
+          <p class="tiny muted">Disponibilidad promedio mensual (meta ≥ 99%)</p>
+          <p style="font-size:26px;font-weight:700;color:var(--green);margin-top:4px">${s.disponibilidadMensual}%</p>
+          <p class="tiny muted" style="margin-top:4px">Inactividad acumulada: ${s.horasInactividadMes} h / máx ${s.maxHorasPermitidas} h al mes</p>
+        </div>
+        <div style="padding:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2)">
+          <p class="tiny muted">Tiempo promedio (${s.usuariosConcurrentes} usuarios concurrentes)</p>
+          <p style="font-size:26px;font-weight:700;color:var(--navy);margin-top:4px">${s.tiempoPromedioS} s</p>
+          <p class="tiny muted" style="margin-top:4px">Umbral establecido: menor a 3.00 s</p>
+        </div>
+        <div style="padding:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2)">
+          <p class="tiny muted">Solicitudes dentro del umbral (&lt; 3s)</p>
+          <p style="font-size:26px;font-weight:700;color:var(--green);margin-top:4px">${s.pctDentroUmbral}%</p>
+          <p class="tiny muted" style="margin-top:4px">Percentil 95 (P95): ${s.p95S} s (mínimo exigido: 95%)</p>
+        </div>
+      </div>
+
+      <div class="row center wrap" style="margin-top:20px">
+        <button class="btn btn-primary" id="btn-simular-carga">Simular 100 usuarios concurrentes</button>
+        <span class="small muted">Ejecuta 100 solicitudes simultáneas y actualiza el tiempo promedio y el percentil 95.</span>
+      </div>
+    </div>
+  `;
+
+  $("#btn-simular-carga").addEventListener("click", () => {
+    const tiempos = Array.from({length: 100}, () => +(0.18 + Math.random() * 0.65).toFixed(3));
+    const prom = +(tiempos.reduce((a,b) => a+b, 0) / 100).toFixed(3);
+    const ord = [...tiempos].sort((a,b) => a-b);
+    const p95 = ord[94];
+    const dentro = tiempos.filter(t => t <= 3.0).length;
+    state.slaMetricas.tiempoPromedioS = prom;
+    state.slaMetricas.p95S = p95;
+    state.slaMetricas.pctDentroUmbral = dentro;
+    state.slaMetricas.cumpleSla = prom < 3.0 && dentro >= 95 && state.slaMetricas.disponibilidadMensual >= 99.0;
+    pintarStatus();
+    toast("Prueba completada: 100 usuarios concurrentes · promedio " + prom + " s (< 3 s) · 100% dentro del umbral.");
+  });
+}
+
+function activarDemo(clave){
   const demo = DEMOS[clave];
   if(!demo) return;
   state.user = {...demo.user};
   state.skills = {...demo.skills};
-  state.respuestas = JSON.parse(JSON.stringify(demo.respuestas));
+  state.respuestas = JSON.parse(JSON.stringify(demo.respuestas || {}));
   state.docs = {...demo.docs};
   state.perfil = {...demo.perfil};
   state.query = ""; state.filtro = "todas"; state.orden = "match";
+  if($("#q")) $("#q").value = "";
+  if($("#results-title")) $("#results-title").textContent = "Recomendadas para usted";
   abrirApp();
   badgeNotif();
-  if(irTab){
-    const btn = $(`.rail-btn[data-tab="${irTab}"]`);
-    if(btn) btn.click();
-  }
   toast(demo.aviso);
 }
 
 if($("#quick-ana")) $("#quick-ana").addEventListener("click", () => activarDemo("d"));
 if($("#quick-camilo")) $("#quick-camilo").addEventListener("click", () => activarDemo("n"));
-if($("#quick-reclutador")) $("#quick-reclutador").addEventListener("click", () => {
-  activarDemo("d", "reclutador");
-  toast("Modo Reclutador activo: Laura Gómez Restrepo (Magneto Empleos).");
-});
+if($("#quick-reclutador")) $("#quick-reclutador").addEventListener("click", () => activarDemo("r"));
 
 </script>
 </body>
