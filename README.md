@@ -1,4 +1,4 @@
-# SkillGraph AI — Matching explicable de vacantes y competencias
+# SkillGraph — Matching explicable de vacantes y competencias
 
 Equipo de trabajo: Sebastian Urrego Ramirez, Juan Pablo López
 
